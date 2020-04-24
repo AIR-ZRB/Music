@@ -5,7 +5,12 @@ import "bootstrap/dist/css/bootstrap.css";
 import "./App.scss";
 
 import recommendMusic from "./pages/recommendMusic/recommendMusic";
-
+import personalFM from "./pages/personalFM/personalFM";
+import video from "./pages/video/video";
+import liveStreaming from "./pages/liveStreaming/liveStreaming";
+import friends from "./pages/friends/friends";
+import favoriteMusic from "./pages/favoriteMusic/favoriteMusic";
+import songList from "./pages/songList/songList";
 
 
 class App extends React.Component<any, any> {
@@ -109,7 +114,7 @@ function ListLink(props: any) {
 function ListColumn(props: any){
     return props.list.map((item:any) =>{
       console.log("??")
-      return <Route key={item.name}  path={"/"+item.name} component={recommendMusic} />
+      return <Route key={item.name}  path={"/"+item.name} component={item.name} />
     })
 }
 
