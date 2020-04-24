@@ -4,6 +4,9 @@ import "bootstrap/dist/css/bootstrap.css";
 // import ""
 import "./App.scss";
 
+import recommendMusic from "./pages/recommendMusic/recommendMusic";
+
+
 
 class App extends React.Component<any, any> {
 
@@ -14,33 +17,41 @@ class App extends React.Component<any, any> {
       themeColor: "primary",
       list: [
         {
+          name: "recommendMusic",
           icon: "Music-note-beamed",
           content: "推荐音乐"
         },
         {
+          name: "personalFM",
           icon: "Mic",
           content: "私人FM"
         },
         {
+          name: "video",
           icon: "Camera-video",
           content: "视频"
         },
         {
+          name: "liveStreaming",
           icon: "Tv",
           content: "直播"
         },
         {
+          name: "friends",
           icon: "people",
           content: "朋友"
         },
         {
+          name: "favoriteMusic",
           icon: "Heart",
           content: "喜欢的音乐"
         },
         {
+          name: "songList",
           icon: "Music-note-list",
           content: "我的歌单"
         },
+
 
       ]
     }
@@ -67,12 +78,12 @@ class App extends React.Component<any, any> {
           </div>
 
           <div className="column">
+            <Redirect path="/" to="/recommendMusic" />
             <ListColumn list={this.state.list} />
           </div>
 
         </HashRouter>
       </div>
-      // </HashRouter>
     );
   }
 }
@@ -85,9 +96,9 @@ class App extends React.Component<any, any> {
 
 
 function ListLink(props: any) {
-  return props.list.map(item => {
-    return <li key={item.icon}>
-      <NavLink to={"/"+item.content}>
+  return props.list.map((item:any) => {
+    return <li key={item.content}>
+      <NavLink to={"/"+item.name}>
         <img src={process.env.PUBLIC_URL + `/icons/${item.icon}.svg`} alt="" width="20" height="20" title={item.content} />
         <span>{item.content}</span>
       </NavLink>
@@ -96,8 +107,9 @@ function ListLink(props: any) {
 }
 
 function ListColumn(props: any){
-    return props.list.map(item =>{
-      return <Route component={item.icon}></Route>
+    return props.list.map((item:any) =>{
+      console.log("??")
+      return <Route key={item.name}  path={"/"+item.name} component={recommendMusic} />
     })
 }
 
