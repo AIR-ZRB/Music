@@ -2,7 +2,7 @@
 import React from "react";
 import "./recommendMusic.scss";
 
-export default class recommendMusic extends React.Component<any, any> {
+export default class RecommendMusic extends React.Component<any, any> {
 
     constructor(props: any) {
         super(props);
