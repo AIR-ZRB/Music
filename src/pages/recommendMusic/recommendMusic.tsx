@@ -3,8 +3,8 @@ import React from "react";
 import "./recommendMusic.scss";
 
 
-import { requestData } from "../../components/MusicComponent";
-import { url } from "inspector";
+import { requestData,NavList } from "../../components/MusicComponent";
+
 
 export default class RecommendMusic extends React.Component<any, any> {
 
@@ -930,24 +930,6 @@ export default class RecommendMusic extends React.Component<any, any> {
         )
     }
 }
-
-
-// 顶部导航组件
-function NavList(props: any) {
-    let clickActive = (select: boolean, index: number) => {
-        props.navList.map((item: any) => {
-            return item.select = false;
-        })
-        props.navList[index].select = true;
-        props.edit("navList", props.navList)
-
-    }
-
-    return props.navList.map(((item: any, index: number) => {
-        return <li key={item.name} onClick={() => clickActive(item.select, index)} style={{ "borderBottomWidth": item.select ? "2px" : "0px" }}><a>{item.name}</a></li>
-    }))
-}
-
 
 
 // 音乐列表

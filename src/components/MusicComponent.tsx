@@ -3,6 +3,7 @@ import React from "react"
 import "./components.scss";
 
 
+// 音乐列表（歌单使用）
 export let MusicList = (props: any): any => {
     return <div className="musicList">
         <ul>
@@ -29,7 +30,7 @@ export let MusicList = (props: any): any => {
 
 }
 
-
+// 请求数据
 export let requestData = (url: string, params?: object): any => {
     return new Promise((reject: any, resolve: any) => {
         fetch(url)
@@ -42,8 +43,33 @@ export let requestData = (url: string, params?: object): any => {
     })
 }
 
+// 网易云的经典导航栏
+
+export let NavList = (props: any): any => {
+    // 点击切换，需要传入一个方法来修改父组件的state
+    let clickActive = (select: boolean, index: number) => {
+        props.navList.map((item: any) => {
+            return item.select = false;
+        })
+        props.navList[index].select = true;
+        props.edit("navList", props.navList)
+
+    }
+    return <div className="navigation">
+        <ul>
+            {props.navList.map(((item: any, index: number) => {
+                return <li key={item.name} onClick={() => clickActive(item.select, index)} style={{ "borderBottomWidth": item.select ? "2px" : "0px" }}><a>{item.name}</a></li>
+            }))}
+        </ul>
+    </div>
+
+}
 
 
+
+
+
+// 歌单列表
 export class MusicSongList extends React.Component<any, any> {
     static defaultProps = {
         data: {
@@ -61,6 +87,30 @@ export class MusicSongList extends React.Component<any, any> {
                     time: "04:22"
                 }
             ],
+        }
+    }
+
+
+    constructor(props: any) {
+        super(props);
+        this.state = {
+            navList: [
+                {
+                    name: "歌曲列表",
+                    urlName: "songLis",
+                    select: true
+                },
+                {
+                    name: "评论",
+                    urlName: "comment",
+                    select: false
+                },
+                {
+                    name: "收藏者",
+                    urlName: "collect",
+                    select: false
+                },
+            ]
         }
     }
 
@@ -96,9 +146,12 @@ export class MusicSongList extends React.Component<any, any> {
                 </div>
 
                 <div>
+                    <NavList navList={this.state.navList} />
                     <MusicList musicList={this.props.data.musicList} />
                 </div>
             </div>
         )
     }
 }
+
+
