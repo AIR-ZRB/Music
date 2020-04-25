@@ -12,11 +12,12 @@ import favoriteMusic from "./pages/favoriteMusic/favoriteMusic";
 import songList from "./pages/songList/songList";
 
 
+import { requestData } from "./components/MusicComponent";
+
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
-
     this.state = {
       themeColor: "primary",
       list: [
@@ -62,14 +63,48 @@ class App extends React.Component<any, any> {
           content: "我的歌单",
           select: false,
         },
+      ],
+      login: {
+        loginShow: false,     // 登录框是否显示
+        nickname: "未登录",   // 用户名
+        avatarUrl: "",        // 头像
+        loginState: false     // 是否登录
+      }
 
-
-      ]
     }
 
+  };
+
+  // 信息更新，登录框显示与隐藏,
+  toSetState(attr: string, newData: any): void {
+    let getLogin = JSON.parse(JSON.stringify(this.state[attr]));
+  
+    for (let key in newData) {
+      getLogin[key] = newData[key];
+    }
+   
+    this.setState({
+      [attr]: getLogin
+    })
+  };
+
+  // 发送登录请求
+  reqLogin(username: string, password: any): void {
+    let url = `http://localhost:4000/login/cellphone?phone=${username}&password=${password}`;
+
+    requestData(url)
+      .then((data: any) => {
+        this.toSetState("login", {
+          nickname: data.profile.nickname,
+          avatarUrl: data.profile.avatarUrl,
+          loginState: true,
+          loginShow: false
+        })
+
+
+
+      })
   }
-
-
 
 
 
@@ -80,6 +115,12 @@ class App extends React.Component<any, any> {
         <HashRouter>
           <nav className={`navbar navbar-dark bg-${this.state.themeColor}`}>
             <a className="navbar-brand" href="#">基佬云音乐</a>
+
+            <div className="user">
+              <img src={this.state.login.avatarUrl} alt="" />
+              <span onClick={() => this.toSetState("login", { loginShow: true })}>{this.state.login.nickname}</span>
+            </div>
+
           </nav>
 
           <div className="navList">
@@ -100,7 +141,10 @@ class App extends React.Component<any, any> {
             {/* <ListColumn list={this.state.list} /> */}
           </div>
 
+
+
         </HashRouter>
+        {this.state.login.loginShow ? <Login toSetState={this.toSetState.bind(this)} reqLogin={this.reqLogin.bind(this)} /> : null}
       </div>
     );
   }
@@ -123,7 +167,7 @@ function ListLink(props: any) {
   }
 
 
-  return props.list.map((item: any,index:number) => {
+  return props.list.map((item: any, index: number) => {
     return <li key={item.content} style={{ "borderLeftWidth": item.select ? "7px" : "0" }} >
       <NavLink to={"/" + item.name}>
         <img src={process.env.PUBLIC_URL + `/icons/${item.icon}.svg`} alt="" width="20" height="20" title={item.content} />
@@ -139,6 +183,54 @@ function ListColumn(props: any) {
     return <Route key={item.name} path={"/" + item.name} component={personalFM} />
   })
 }
+
+// 登录框组件
+function Login(props: any) {
+
+  // 获取输入的用户名和密码
+  let [username, setUsername] = React.useState("");
+  let [password, setPassword] = React.useState("");
+  let setUserMessage = (event: any, type: string) => {
+    event.persist();
+    if (type === "username") {
+      setUsername(event.target.value);
+    } else {
+      setPassword(event.target.value);
+    }
+
+  }
+
+
+
+  // 关闭登录框
+  let closeLoginBox = (event: any): void => {
+    if (event.target.className === "login") {
+      props.toSetState("login", { loginShow: false })
+    }
+  }
+
+
+
+  return <div className="login" onClick={closeLoginBox}>
+    <div className="loginBox">
+      <div className="login-type">
+        <span>手机登录</span>
+        <span>短信登录</span>
+      </div>
+      {/* setPassword("12321") */}
+
+      <div className="user-data">
+        <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" onChange={(event: any) => setUserMessage(event, "username")} />
+        <input type="password" className="form-control" placeholder="password" aria-label="Username" aria-describedby="addon-wrapping" onChange={(event: any) => setUserMessage(event, "password")} />
+      </div>
+
+      <div className="submit-data">
+        <button type="button" className="btn btn-primary" onClick={() => props.reqLogin(username, password)}>Login</button>
+      </div>
+    </div>
+  </div>
+}
+
 
 
 export default App;

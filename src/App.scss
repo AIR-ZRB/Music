@@ -1,8 +1,20 @@
 $themeColor: #007bff;
 .App {
   position: relative;
+  width: 100%;
+  height: 100%;
+
   .navbar {
     height: 70px;
+
+    .user {
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+    }
+
   }
 
   .navList {
@@ -46,7 +58,70 @@ $themeColor: #007bff;
   .column {
     width: 98%;
     height: 100px;
-
     padding-left: 300px;
   }
+
+  .login {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+
+
+    .login-type {
+      margin-top: 10px;
+      font-size: 14px;
+
+      span {
+        margin-right: 10px;
+        &:nth-child(1) {
+          color: $themeColor;
+        }
+      }
+     
+    }
+    
+
+    .loginBox {
+      width: 400px;
+      height: 300px;
+      padding: 10px;
+      border-radius: 10px;
+      background: #fff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+
+      .user-data {
+        input {
+          margin-top: 30px;
+          &:nth-child(1) {
+            margin-top: 30px;
+          }
+        }
+      }
+
+      .submit-data {
+        width: 100%;        
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+
+
+        button {
+          width: 100%;
+        }
+      }
+
+
+    }
+
+  }
+
+
 }

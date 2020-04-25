@@ -3,7 +3,7 @@ import React from "react"
 import "./components.scss";
 
 
-export default function MsicList(props: any): any {
+export let MusicList = (props: any): any => {
     return props.musicList.map((item: any, index: number) => {
         return <div className="musicList" key={`${item.musicList}+${index}`}>
             <ul>
@@ -16,4 +16,20 @@ export default function MsicList(props: any): any {
             </ul>
         </div>
     })
+}
+
+
+
+
+export let requestData = (url: string, params?: object): any => {
+    return new Promise((reject: any, resolve: any) => {
+        fetch(url)
+            .then((res: any) => {
+                return res.json();
+            })
+            .then((data: any) => {
+                data.code === 200 ? reject(data) : resolve(data.msg);
+            })
+    })
+
 }

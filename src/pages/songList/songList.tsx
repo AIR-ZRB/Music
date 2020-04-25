@@ -1,7 +1,8 @@
 import React from "react";
 import "./songList.scss";
 
-import MusicList from "../../components/MusicList";
+import { MusicList } from "../../components/MusicComponent";
+
 
 export default class songList extends React.Component<any,any> {
     constructor(props: any){
@@ -59,11 +60,8 @@ export default class songList extends React.Component<any,any> {
                 </div>
 
                 <div>
-                    
                     <MusicList musicList={this.state.musicList} />
-                    
                 </div>
-
             </div>
         )   
     }
