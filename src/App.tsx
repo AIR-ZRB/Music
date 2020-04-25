@@ -141,8 +141,6 @@ class App extends React.Component<any, any> {
             {/* <ListColumn list={this.state.list} /> */}
           </div>
 
-
-
         </HashRouter>
         {this.state.login.loginShow ? <Login toSetState={this.toSetState.bind(this)} reqLogin={this.reqLogin.bind(this)} /> : null}
       </div>
