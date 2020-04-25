@@ -31,7 +31,6 @@ export default class songList extends React.Component<any,any> {
                     album: "歌手·当打之年 第9期",
                     time: "04:22"
                 },
-
             ]
         }
     }
