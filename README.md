@@ -11,6 +11,16 @@
 
 ## 接口
 
+
+### 登录
+
+
+`http://localhost:4000/login/cellphone?phone=xxx&password=xxx`
+
+### 获取每日推荐歌单
+
+`http://localhost:4000/recommend/resource`
+
 ### 获取用户歌单
 
 说明 : 登陆后调用此接口 , 传入用户 id, 可以获取用户歌单
@@ -33,6 +43,8 @@
 必选参数 : uid: 用户 id
 接口地址 : /likelist
 调用例子 : /likelist?uid=32953014
+
+`http://localhost:4000/likelist?uid=337199199`
 
 
 ### 私人FM
