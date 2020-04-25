@@ -9,6 +9,7 @@
         &:nth-child(1){
             border-top: 1px solid #ccc;
             border-bottom: 1px solid #ccc;
+            margin: 0;
             li {
                 border-right: 1px solid #ccc;
                 padding: 3px 0 3px 5px;
@@ -17,9 +18,19 @@
                 }
             }
         }
+
+        &:nth-child(2n) {
+            background: #fafafa;
+        }
+
+        &:hover {
+            background: #E3E3E5;
+        }
+        cursor: pointer;
+        margin-bottom: 7px;
         width: 100%;
         display: grid;
-        padding: 0;
+        padding: 3px 0;
         grid-template-columns: 5% 10% 30% 25% 20% 10%;
         
         li {
@@ -38,7 +49,7 @@
     position: relative;
     padding: 50px 0 0 0;
     .listMessage {
-        height: 400px;
+        margin-bottom: 200px;
         .coverImg {
             width: 250px;
             height: 250px;

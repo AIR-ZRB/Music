@@ -59,21 +59,7 @@ export class MusicSongList extends React.Component<any, any> {
                     singer: "华晨宇",
                     album: "歌手·当打之年 第9期",
                     time: "04:22"
-                },
-                {
-                    like: true,
-                    musicName: "好像爱这个世界",
-                    singer: "华晨宇",
-                    album: "歌手·当打之年 第9期",
-                    time: "04:22"
-                },
-                {
-                    like: true,
-                    musicName: "好像爱这个世界",
-                    singer: "华晨宇",
-                    album: "歌手·当打之年 第9期",
-                    time: "04:22"
-                },
+                }
             ],
         }
     }

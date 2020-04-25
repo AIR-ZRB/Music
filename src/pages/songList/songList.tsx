@@ -1,7 +1,6 @@
 import React from "react";
-import "./songList.scss";
 
-import { MusicList,MusicSongList } from "../../components/MusicComponent";
+import { MusicSongList } from "../../components/MusicComponent";
 
 
 export default class songList extends React.Component<any,any> {
