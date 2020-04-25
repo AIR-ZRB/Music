@@ -1529,7 +1529,9 @@ function DynamicState(props: any): any {
                     
                 </div>
             </div>
-                
+
+
+            {/* 发布内容 */}
             <div className="content">
                 <p>{item.info.commentThread.resourceInfo.name}</p>
 

@@ -7,7 +7,9 @@
 - [ ] 如何再cookie中登录
 - [ ] 推荐音乐需要登陆后才能获取，先用假数据
 - [ ] 把songList组件化
-
+- [ ] 动态列表优化
+- [ ] 导航列表优化
+- [ ] 私人列表优化
 
 ## 接口
 
@@ -72,3 +74,13 @@
 lasttime : 返回数据的 lasttime ,默认-1,传入上一次返回结果的 lasttime,将会返回下一页的数据
 接口地址 : /event
 调用例子 : /event?pagesize=30&lasttime=1556740526369
+
+### 获取用户歌单
+
+
+
+
+
+
+
+`http://localhost:4000/user/playlist?uid=337199199`
