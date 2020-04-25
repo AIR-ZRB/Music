@@ -29,6 +29,7 @@ $themeColor: #007bff;
 
   .songList {
     margin-top: 40px;
+ 
 
     p {
       font-size: 20px;
@@ -48,6 +49,7 @@ $themeColor: #007bff;
         margin-bottom: 70px;
         border: 1px solid #000;
         position: relative;
+        background-size: 200px 200px;
 
         span {
             position: absolute;
@@ -55,7 +57,9 @@ $themeColor: #007bff;
             padding: 0;
             border: 0;
             font-size: 16px;
+            height: 16px;
             bottom: -30px;
+            text-overflow: ellipsis;
 
         }
       }

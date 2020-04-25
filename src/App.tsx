@@ -69,20 +69,20 @@ class App extends React.Component<any, any> {
         nickname: "未登录",   // 用户名
         avatarUrl: "",        // 头像
         loginState: false     // 是否登录
-      }
+      },
+      todaySongList: {}
 
     }
-
   };
 
   // 信息更新，登录框显示与隐藏,
   toSetState(attr: string, newData: any): void {
     let getLogin = JSON.parse(JSON.stringify(this.state[attr]));
-  
+
     for (let key in newData) {
       getLogin[key] = newData[key];
     }
-   
+
     this.setState({
       [attr]: getLogin
     })
@@ -100,11 +100,11 @@ class App extends React.Component<any, any> {
           loginState: true,
           loginShow: false
         })
-
-
-
       })
   }
+
+
+
 
 
 
@@ -217,8 +217,6 @@ function Login(props: any) {
         <span>手机登录</span>
         <span>短信登录</span>
       </div>
-      {/* setPassword("12321") */}
-
       <div className="user-data">
         <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping" onChange={(event: any) => setUserMessage(event, "username")} />
         <input type="password" className="form-control" placeholder="password" aria-label="Username" aria-describedby="addon-wrapping" onChange={(event: any) => setUserMessage(event, "password")} />

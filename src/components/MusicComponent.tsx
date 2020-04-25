@@ -19,8 +19,6 @@ export let MusicList = (props: any): any => {
 }
 
 
-
-
 export let requestData = (url: string, params?: object): any => {
     return new Promise((reject: any, resolve: any) => {
         fetch(url)
@@ -31,5 +29,17 @@ export let requestData = (url: string, params?: object): any => {
                 data.code === 200 ? reject(data) : resolve(data.msg);
             })
     })
-
 }
+
+// export let toSetState = (attr: string, newData: any): any => {
+
+//     let getLogin = JSON.parse(JSON.stringify(this.state[attr]));
+
+//     for (let key in newData) {
+//       getLogin[key] = newData[key];
+//     }
+
+//     this.setState({
+//       [attr]: getLogin
+//     })
+//   };

@@ -39,7 +39,7 @@ export default class songList extends React.Component<any,any> {
 
     render(){
         return (
-            <div className="songList">
+            <div className="mySongList">
                 <div className="listMessage">
                     <section className="picture">
                         <img src="https://pic4.zhimg.com/80/v2-2994fa192eb7b766b21b97d2a7a46c69_720w.jpg" alt=""/>
