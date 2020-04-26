@@ -21,46 +21,55 @@ class App extends React.Component<any, any> {
       themeColor: "primary",
       navList: [
         {
+          id: 0,
           name: "recommendMusic",
           icon: "Music-note-beamed",
           content: "推荐音乐",
           select: true,
         },
         {
+          id: 1,
           name: "personalFM",
           icon: "Mic",
           content: "私人FM",
           select: false,
         },
         {
+          id: 2,
           name: "video",
           icon: "Camera-video",
           content: "视频",
           select: false,
         },
         {
+          id: 3,
           name: "liveStreaming",
           icon: "Tv",
           content: "直播",
           select: false,
         },
         {
+          id: 4,
           name: "friends",
           icon: "people",
           content: "朋友",
           select: false,
         },
         {
-          name: "favoriteMusic",
+          id: "12312312",
+          name: "songList",
           icon: "Heart",
           content: "喜欢的音乐",
           select: false,
+
         },
         {
+          id: "11111111",
           name: "songList",
           icon: "Music-note-list",
           content: "我的歌单",
           select: false,
+
         },
       ],
       login: {
@@ -87,7 +96,7 @@ class App extends React.Component<any, any> {
     })
   };
 
-  
+
 
   setData(editName: any, step: any = 11) {
     this.setState({
@@ -126,7 +135,7 @@ class App extends React.Component<any, any> {
       .then((data: any) => {
         songListData = data.playlist.map((item: any, index: number) => {
           return {
-            name: item.name,
+            name: "songList",
             content: item.name,
             id: item.id,
             select: false,
@@ -154,7 +163,7 @@ class App extends React.Component<any, any> {
       <div className="App">
         <HashRouter>
           <nav className={`navbar navbar-dark bg-${this.state.themeColor}`}>
-            <a className="navbar-brand" href="#">基佬云音乐</a>
+            {/* <a className="navbar-brand" href="http://localhost:3000/#/">基佬云音乐</a> */}
 
             <div className="user">
               <img src={this.state.login.avatarUrl} alt="" />
@@ -171,12 +180,12 @@ class App extends React.Component<any, any> {
 
           <div className="column">
             <Redirect path="/" to="/recommendMusic" />
-            <Route path="/recommendMusic" component={recommendMusic} />
-            <Route path="/personalFM" component={personalFM} />
+            {/* <Route path="/recommendMusic" component={recommendMusic} /> */}
+            {/* <Route path="/personalFM" component={personalFM} />
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            <Route path="/songList" component={songList} />
+            <Route path="/songList" component={songList} /> */}
             {/* <ListColumn list={this.state.list} /> */}
           </div>
 
@@ -203,9 +212,9 @@ function ListLink(props: any) {
 
 
   return props.navList.map((item: any, index: number) => {
-    return <li key={item.content} style={{ "borderLeftWidth": item.select ? "7px" : "0" }} onClick={() => clickActive(item.select, index)}  title={item.content}>
-      <NavLink to={"/" + item.name}>
-        <img src={process.env.PUBLIC_URL + `/icons/${item.icon}.svg`} alt="" width="20" height="20"/>
+    return <li key={item.id} style={{ "borderLeftWidth": item.select ? "7px" : "0" }} onClick={() => clickActive(item.select, index)} title={item.content}>
+      <NavLink to={"/" + item.name + "?id=" + item.id}>
+        <img src={process.env.PUBLIC_URL + `/icons/${item.icon}.svg`} alt="" width="20" height="20" />
         <span >{item.content}</span>
       </NavLink>
     </li>

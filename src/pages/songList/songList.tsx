@@ -3,17 +3,18 @@ import React from "react";
 import { MusicSongList } from "../../components/MusicComponent";
 
 
-export default class songList extends React.Component<any,any> {
+export default class songList extends React.Component<any, any> {
 
-    constructor(props: any){
+    constructor(props: any) {
         super(props);
 
     }
 
 
-    render(){
+    render() {
+        
         return (
-            <MusicSongList />
-        )   
+            <MusicSongList songListId={this.props.location.search.substr(4)}/>
+        )
     }
 }
