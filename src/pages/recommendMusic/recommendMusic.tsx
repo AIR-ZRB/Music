@@ -3,7 +3,7 @@ import React from "react";
 import "./recommendMusic.scss";
 
 
-import { requestData,NavList } from "../../components/MusicComponent";
+import { requestData, NavList } from "../../components/MusicComponent";
 
 
 export default class RecommendMusic extends React.Component<any, any> {
@@ -889,7 +889,6 @@ export default class RecommendMusic extends React.Component<any, any> {
         requestData(url)
             .then((data: any) => {
                 console.log(data.recommend);
-
                 this.setState({
                     songList: data.recommend
                 })
@@ -897,7 +896,7 @@ export default class RecommendMusic extends React.Component<any, any> {
     }
 
 
-    componentWillMount(){
+    componentWillMount() {
         // this.reqTodayMusic();
     }
 
@@ -907,11 +906,9 @@ export default class RecommendMusic extends React.Component<any, any> {
     render() {
         return (
             <div className="recommendMusic">
-                <nav className="navigation">
-                    <ul>
-                        <NavList navList={this.state.navList} edit={this.setData.bind(this)} />
-                    </ul>
-                </nav>
+
+                <NavList navList={this.state.navList} edit={this.setData.bind(this)} />
+
 
                 <div className="banner">
                     <img src="" alt="" height="300" />

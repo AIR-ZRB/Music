@@ -44,7 +44,6 @@ export let requestData = (url: string, params?: object): any => {
 }
 
 // 网易云的经典导航栏
-
 export let NavList = (props: any): any => {
     // 点击切换，需要传入一个方法来修改父组件的state
     let clickActive = (select: boolean, index: number) => {
@@ -64,9 +63,6 @@ export let NavList = (props: any): any => {
     </div>
 
 }
-
-
-
 
 
 // 歌单列表

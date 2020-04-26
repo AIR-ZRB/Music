@@ -8,7 +8,6 @@ import personalFM from "./pages/personalFM/personalFM";
 import video from "./pages/video/video";
 import liveStreaming from "./pages/liveStreaming/liveStreaming";
 import friends from "./pages/friends/friends";
-import favoriteMusic from "./pages/favoriteMusic/favoriteMusic";
 import songList from "./pages/songList/songList";
 
 
@@ -20,7 +19,7 @@ class App extends React.Component<any, any> {
     super(props);
     this.state = {
       themeColor: "primary",
-      list: [
+      navList: [
         {
           name: "recommendMusic",
           icon: "Music-note-beamed",
@@ -70,8 +69,8 @@ class App extends React.Component<any, any> {
         avatarUrl: "",        // 头像
         loginState: false     // 是否登录
       },
-      todaySongList: {}
-
+      todaySongList: {},
+      length: 0
     }
   };
 
@@ -88,6 +87,17 @@ class App extends React.Component<any, any> {
     })
   };
 
+  
+
+  setData(editName: any, step: any = 11) {
+    this.setState({
+      editName: step
+    })
+  }
+
+
+
+
   // 发送登录请求
   reqLogin(username: string, password: any): void {
     let url = `http://localhost:4000/login/cellphone?phone=${username}&password=${password}`;
@@ -101,6 +111,36 @@ class App extends React.Component<any, any> {
           loginShow: false
         })
       })
+      .then(() => {
+        this.reqSongList("337199199")
+      })
+  }
+
+
+  // 请求歌单（应该放到登录完后）
+  reqSongList(userId: string): void {
+    let url = `http://localhost:4000/user/playlist?uid=${userId}`;
+
+    let songListData = [];
+    requestData(url)
+      .then((data: any) => {
+        songListData = data.playlist.map((item: any, index: number) => {
+          return {
+            name: item.name,
+            content: item.name,
+            id: item.id,
+            select: false,
+            icon: "Music-note-list",
+          }
+        })
+
+
+        this.setState({
+          length: this.state.navList.push(...songListData)
+        })
+        console.log(songListData);
+      })
+
   }
 
 
@@ -125,7 +165,7 @@ class App extends React.Component<any, any> {
 
           <div className="navList">
             <ul>
-              <ListLink list={this.state.list} />
+              <ListLink navList={this.state.navList} edit={this.setData.bind(this)} />
             </ul>
           </div>
 
@@ -136,7 +176,6 @@ class App extends React.Component<any, any> {
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            <Route path="/favoriteMusic" component={favoriteMusic} />
             <Route path="/songList" component={songList} />
             {/* <ListColumn list={this.state.list} /> */}
           </div>
@@ -151,8 +190,7 @@ class App extends React.Component<any, any> {
 
 
 
-
-// 列表
+// 左边列表
 function ListLink(props: any) {
 
   let clickActive = (select: boolean, index: number) => {
@@ -161,15 +199,14 @@ function ListLink(props: any) {
     })
     props.navList[index].select = true;
     props.edit("navList", props.navList)
-
   }
 
 
-  return props.list.map((item: any, index: number) => {
-    return <li key={item.content} style={{ "borderLeftWidth": item.select ? "7px" : "0" }} >
+  return props.navList.map((item: any, index: number) => {
+    return <li key={item.content} style={{ "borderLeftWidth": item.select ? "7px" : "0" }} onClick={() => clickActive(item.select, index)}  title={item.content}>
       <NavLink to={"/" + item.name}>
-        <img src={process.env.PUBLIC_URL + `/icons/${item.icon}.svg`} alt="" width="20" height="20" title={item.content} />
-        <span>{item.content}</span>
+        <img src={process.env.PUBLIC_URL + `/icons/${item.icon}.svg`} alt="" width="20" height="20"/>
+        <span >{item.content}</span>
       </NavLink>
     </li>
   })

@@ -47,6 +47,7 @@ $themeColor: #007bff;
 
 .mySongList {
     width: 100%;
+    min-width: 800px;
     // height: 100%;
     height: 900px;
     position: relative;
@@ -104,7 +105,6 @@ $themeColor: #007bff;
     width: 100%;
     height: 58px;
     line-height: 50px;
-   
     border-bottom: 1px solid #ccc;
     ul {
       li {
