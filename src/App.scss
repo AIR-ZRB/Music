@@ -19,7 +19,6 @@ $themeColor: #007bff;
         margin-left: 10px;
       }
     }
-
   }
 
   .navList {
@@ -34,7 +33,7 @@ $themeColor: #007bff;
         height: 50px;
         overflow: hidden;
         line-height: 50px;
-        padding:0 20px 0 30px;
+        padding: 0 20px 0 30px;
         border-left-color: $themeColor;
         border-left-style: solid;
         cursor: pointer;
@@ -55,7 +54,7 @@ $themeColor: #007bff;
 
         &:hover {
           transform: scale(1.1);
-          background: rgba(0,0,0,.1);
+          background: rgba(0, 0, 0, 0.1);
         }
       }
     }
@@ -70,11 +69,10 @@ $themeColor: #007bff;
   .login {
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,.5);
+    background: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
-
 
     .login-type {
       margin-top: 10px;
@@ -86,9 +84,7 @@ $themeColor: #007bff;
           color: $themeColor;
         }
       }
-     
     }
-    
 
     .loginBox {
       width: 400px;
@@ -113,21 +109,104 @@ $themeColor: #007bff;
       }
 
       .submit-data {
-        width: 100%;        
+        width: 100%;
         display: flex;
         justify-content: center;
         margin-top: 30px;
-
 
         button {
           width: 100%;
         }
       }
+    }
+  }
+
+  .audio {
+    width: 100%;
+    min-width: 1000px;
+    height: 70px;
+    position: fixed;
+    bottom: 0;
+    // background: rgba(255,255,255,.3);
+    background: #fff;
+    border-top: 1px solid #ccc;
+
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    .audioCtrl {
+      position: absolute;
+      span {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        // background: $themeColor;
+       
+        border-radius: 50%;
+        float: left;
+        text-align: center;
+        margin-right: 20px;
+        cursor: pointer;
+
+        img {
+          width: 30px;
+          height: 30px;
+        }
+
+        &:nth-child(2) {
+        }
+      }
+    }
+
+    .currentSong {
+      margin-left: 200px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      // color:$themeColor;
+
+      .avatarImg {
+        width: 50px;
+        height: 50px;
+      }
+
+      .avatar {
+        width: 120px;
+       
+        p {
+          margin: 0 0 5px 20px;
+          font-size: 14px;
+          height: 21px;
+          overflow: hidden;
+        }
+      }
+
+      .progress {
+        width: 60%;
+        height: 25px;
+      }
+
+      .voice {
+        margin-left: 30px;
+        display: flex;
+        align-items: center;
+        span {
+          img {
+            width: 25px;
+            height: 25px;
+            margin-right: 10px;
+          }
+        }
+        .progress {
+          width: 100px;
+          height: 20px;
+        }
+      }
+
+
+
 
 
     }
-
   }
-
-
 }

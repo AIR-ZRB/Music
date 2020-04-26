@@ -1,120 +1,140 @@
 $themeColor: #007bff;
 
-
-
-
+// 渲染每一条音乐
 .musicList {
-    width: 100%;
+  width: 100%;
 
-
-
-    ul {
-        &:nth-child(1){
-            // border-top: 1px solid #ccc;
-            border-bottom: 1px solid #ccc;
-            margin: 0;
-            li {
-                border-right: 1px solid #ccc;
-                padding: 3px 0 3px 5px;
-                &:last-child {
-                    border-right: 0;
-                }
-            }
-        }
-
-        &:nth-child(2n) {
-            background: #fafafa;
-        }
-
-        &:hover {
-            background: #E3E3E5;
-        }
-        cursor: pointer;
-        margin-bottom: 7px;
-        width: 100%;
-        display: grid;
-        padding: 3px 0;
-        grid-template-columns: 5% 10% 30% 25% 20% 10%;
-        
-        li {
-            padding-left: 5px;
-            float: left;
-        }
-    }
-}
-
-
-
-.mySongList {
-    width: 100%;
-    min-width: 800px;
-    // height: 100%;
-    height: 900px;
-    position: relative;
-    padding: 50px 0 0 0;
-    .listMessage {
-        margin-bottom: 200px;
-        .coverImg {
-            width: 250px;
-            height: 250px;
-            position: absolute;
-            left: 50px;
-        }
-
-        .message {
-            padding-left: 350px;
-            width: 100%;
-
-
-            .listCreate {
-                margin: 20px 0;
-                display: flex;
-                align-items: center;
-                .avatar {
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    margin-right: 10px;
-                }
-                p{
-                    margin: 0;
-                    span{
-                        font-size: 16px;
-                        &:nth-child(1){
-                            margin-right: 20px;
-                        }
-                    }
-                }
-            }
-           
-
-            .btn-ctrl {
-
-                button {
-                    margin-right: 30px;
-                }
-            }
-
-
-        }
-    }
-}
-
-
-.navigation {
-    width: 100%;
-    height: 58px;
-    line-height: 50px;
-    border-bottom: 1px solid #ccc;
-    ul {
+  ul {
+    &:nth-child(1) {
+      // border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin: 0;
       li {
-        float: left;
-        padding: 0 20px 5px;
-
-        border-bottom-style: solid;
-        border-bottom-color: $themeColor;
-        text-decoration: none;
-        cursor: pointer;
+        border-right: 1px solid #ccc;
+        padding: 3px 0 3px 5px;
+        &:last-child {
+          border-right: 0;
+        }
       }
     }
+
+    &:nth-child(2n) {
+      background: #fafafa;
+    }
+
+    &:hover {
+      background: #e3e3e5;
+    }
+    cursor: pointer;
+    margin-bottom: 7px;
+    width: 100%;
+    display: grid;
+    padding: 3px 0;
+    height: 30px;
+    overflow: hidden;
+    grid-template-columns: 5% 10% 30% 25% 20% 10%;
+
+    li {
+      padding-left: 5px;
+      float: left;
+    }
   }
+}
+
+// 歌单组件
+.mySongList {
+  width: 100%;
+  min-width: 800px;
+  // height: 100%;
+  height: 900px;
+  position: relative;
+  padding: 50px 0 0 0;
+  .listMessage {
+    margin-bottom: 200px;
+    .coverImg {
+      width: 250px;
+      height: 250px;
+      position: absolute;
+      left: 50px;
+    }
+
+    .message {
+      padding-left: 350px;
+      width: 100%;
+
+      .listCreate {
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          margin-right: 10px;
+        }
+        p {
+          margin: 0;
+          span {
+            font-size: 16px;
+            &:nth-child(1) {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
+
+      .btn-ctrl {
+        button {
+          margin-right: 30px;
+        }
+      }
+
+      
+    }
+  }
+
+  .currentSongList {
+    padding-left: 20px;
+  }
+}
+
+// 网易云经典导航条
+.navigation {
+  width: 100%;
+  height: 58px;
+  line-height: 50px;
+  border-bottom: 1px solid #ccc;
+  ul {
+    li {
+      float: left;
+      padding: 0 20px 5px;
+
+      border-bottom-style: solid;
+      border-bottom-color: $themeColor;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}
+
+.loading {
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    width: 70px;
+    height: 70px;
+    border-width: 7px;
+  }
+}

@@ -5,7 +5,7 @@ import "./components.scss";
 
 // 音乐列表（歌单使用）
 export let MusicList = (props: any): any => {
-   
+
     return <div className="musicList">
         <ul>
             <li></li>
@@ -108,33 +108,34 @@ export class MusicSongList extends React.Component<any, any> {
                     select: false
                 },
             ],
-            musicList: [
-                // {
-                //     name: "時を刻む唄",
-                //     describe: "TV动画《CLANNAD AFTER STORY》片头曲 ；TVアニメ「CLANNAD 〜AFTER STORY〜」OPテーマ",
-                //     avatarName: "Lia",
-                //     avatarId: 16993,
-                //     musicId: 608667,
-                //     mvId: 5956029,
-                //     albumPic:"http://p2.music.126.net/VOPguglOdIiQ-MBx94boBw==/827932255758652.jpg",
-                //     albumName: "時を刻む唄/TORCH",
-                //     albumId: 57768,
-                // }
-            ]
+            musicList: [],
+            requestSusscess: false,
         }
     }
 
-    // componentWillUnmount(){
-    //     this.reqCurrentSongListMusic()
-    // }
+
+    componentWillMount(){
+        this.reqCurrentSongListMusic(this.props.songListId);
+        return true;
+    }
+
+    // 当props改变
+    componentWillReceiveProps (nextProps:any) {
+        this.reqCurrentSongListMusic(nextProps.songListId);
+        return true;
+    }
 
 
 
-    reqCurrentSongListMusic() {
-        let url = `http://localhost:4000/playlist/detail?id=${this.props.songListId}`;
+    reqCurrentSongListMusic(songListId: string) {
+        let url = `http://localhost:4000/playlist/detail?id=${songListId}`;
+        console.log("start request")
+        this.setState({
+            requestSusscess: false
+        })
         requestData(url)
             .then((data: any) => {
-                let songListMusic = data.playlist.tracks.map((item :any,index: number)=>{
+                let songListMusic = data.playlist.tracks.map((item: any, index: number) => {
                     return {
                         name: item.name,
                         musicId: item.id,
@@ -148,7 +149,9 @@ export class MusicSongList extends React.Component<any, any> {
                     }
                 })
 
+                    console.log(123123);
                 this.setState({
+                    requestSusscess: true,
                     musicList: songListMusic
                 })
 
@@ -156,7 +159,7 @@ export class MusicSongList extends React.Component<any, any> {
     }
 
     render() {
-        console.log(this.props.songListId)      // 获取当前歌单id
+        // console.log(this.props.songListId)      // 获取当前歌单id
 
         return (
             <div className="mySongList">
@@ -186,13 +189,23 @@ export class MusicSongList extends React.Component<any, any> {
                     </section>
                 </div>
 
-                <div>
+                <div className="currentSongList">
                     <NavList navList={this.state.navList} />
                     <MusicList musicList={this.state.musicList} />
                 </div>
+                {this.state.requestSusscess ? null : <Loading />}
+
             </div>
         )
     }
 }
 
 
+export let Loading = (): any => {
+    return <div className="loading">
+        <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+        </div>
+    </div>
+
+}
