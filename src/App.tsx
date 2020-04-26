@@ -13,10 +13,18 @@ import songList from "./pages/songList/songList";
 
 import { requestData } from "./components/MusicComponent";
 
+import {inject,observer} from "mobx-react";
+@inject('store');
+@observer
+
+
+
+
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+
     this.state = {
       themeColor: "primary",
       navList: [
@@ -54,23 +62,7 @@ class App extends React.Component<any, any> {
           icon: "people",
           content: "朋友",
           select: false,
-        },
-        // {
-        //   id: "12312312",
-        //   name: "songList",
-        //   icon: "Heart",
-        //   content: "喜欢的音乐",
-        //   select: false,
-
-        // },
-        // {
-        //   id: "11111111",
-        //   name: "songList",
-        //   icon: "Music-note-list",
-        //   content: "我的歌单",
-        //   select: false,
-
-        // },
+        }
       ],
       login: {
         loginShow: false,     // 登录框是否显示
@@ -79,8 +71,11 @@ class App extends React.Component<any, any> {
         loginState: false     // 是否登录
       },
       todaySongList: {},
-      length: 0
+      length: 0,
+      audio: React.createRef()
     }
+
+
   };
 
   // 信息更新，登录框显示与隐藏,
@@ -158,9 +153,10 @@ class App extends React.Component<any, any> {
 
 
 
-  render() {
+  render(): any {
+    { console.log(this)}
     return (
-
+     
       <div className="App">
         <HashRouter>
           <nav className={`navbar navbar-dark bg-${this.state.themeColor}`}>
@@ -192,7 +188,38 @@ class App extends React.Component<any, any> {
 
         </HashRouter>
         {this.state.login.loginShow ? <Login toSetState={this.toSetState.bind(this)} reqLogin={this.reqLogin.bind(this)} /> : null}
-        <AudioComponent />
+        {/* <AudioComponent /> */}
+        <div className="audio">
+          <div className="audioCtrl">
+            <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
+            <span><img src={process.env.PUBLIC_URL + `/icons/play.svg`} alt="" /></span>
+            <span><img src={process.env.PUBLIC_URL + `/icons/Skip-end.svg`} alt="" /></span>
+          </div>
+
+
+          <div className="currentSong">
+            <img src="https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg" alt="" className="avatarImg" />
+            <section className="avatar">
+              <p title="昨日青空">昨日青空</p>
+              <p>尤长靖</p>
+            </section>
+
+
+            <div className="progress">
+              <div className="progress-bar" role="progressbar" style={{ width: "65%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>65%</div>
+            </div>
+
+            <div className="voice">
+              <span><img src={process.env.PUBLIC_URL + `/icons/Volume-up.svg`} alt="" /></span>
+              <div className="progress">
+                <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
+              </div>
+            </div>
+            <audio src="" ref={this.state.audio} />
+
+          </div>
+
+        </div>
       </div>
     );
   }
@@ -276,39 +303,10 @@ function Login(props: any) {
 }
 
 
-function AudioComponent(props: any): any {
-  return <div className="audio">
-    <div className="audioCtrl">
-      <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
-      <span><img src={process.env.PUBLIC_URL + `/icons/play.svg`} alt="" /></span>
-      <span><img src={process.env.PUBLIC_URL + `/icons/Skip-end.svg`} alt="" /></span>
-    </div>
+// function AudioComponent(props: any): any {
 
-
-    <div className="currentSong">
-      <img src="https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg" alt="" className="avatarImg" />
-      <section className="avatar">
-        <p title="昨日青空">昨日青空</p>
-        <p>尤长靖</p>
-      </section>
-
-
-      <div className="progress">
-        <div className="progress-bar" role="progressbar" style={{ width: "65%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>65%</div>
-      </div>
-
-      <div className="voice">
-        <span><img src={process.env.PUBLIC_URL + `/icons/Volume-up.svg`} alt="" /></span>
-        <div className="progress">
-          <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
-        </div>
-      </div>
-
-
-    </div>
-
-  </div>
-}
+//   return
+// }
 
 
 

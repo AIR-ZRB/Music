@@ -13,6 +13,7 @@ export default class songList extends React.Component<any, any> {
 
 
     render() {
+        console.log(this)
         
         return (
             <MusicSongList songListId={this.props.location.search.substr(4)}/>

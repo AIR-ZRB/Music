@@ -4,9 +4,26 @@ import './index.css';
 import App from './App.tsx';
 import * as serviceWorker from './serviceWorker';
 
+
+
+
+
+import { observable, action } from "mobx";
+import { observer,Provider } from "mobx-react";
+
+
+
+let appState = observable({
+  themeColor: "#007bff",
+  audioSrc: "",
+})
+
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={appState}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

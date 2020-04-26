@@ -6,6 +6,20 @@ import "./components.scss";
 // 音乐列表（歌单使用）
 export let MusicList = (props: any): any => {
 
+    function playMusic(musicId: string) {
+        let url = `http://localhost:4000/song/url?id=${musicId}`;
+        requestData(url)
+            .then((data: any) => {
+
+                // let audio = document.getElementById("audio");
+                // audio.src = data.data[0].url;
+                // audio.play();
+                console.log()
+
+            })
+    }
+
+
     return <div className="musicList">
         <ul>
             <li></li>
@@ -17,7 +31,7 @@ export let MusicList = (props: any): any => {
         </ul>
 
         {props.musicList.map((item: any, index: number) => {
-            return <ul key={`${item.musicId}+${index}`}>
+            return <ul key={`${item.musicId}+${index}`} onDoubleClick={() => console.log(item.musicId)}>
                 <li>1</li>
                 <li>Heart</li>
                 <li>{item.name}</li>
@@ -114,13 +128,13 @@ export class MusicSongList extends React.Component<any, any> {
     }
 
 
-    componentWillMount(){
+    componentWillMount() {
         this.reqCurrentSongListMusic(this.props.songListId);
         return true;
     }
 
     // 当props改变
-    componentWillReceiveProps (nextProps:any) {
+    componentWillReceiveProps(nextProps: any) {
         this.reqCurrentSongListMusic(nextProps.songListId);
         return true;
     }
@@ -149,7 +163,7 @@ export class MusicSongList extends React.Component<any, any> {
                     }
                 })
 
-                    console.log(123123);
+                console.log(123123);
                 this.setState({
                     requestSusscess: true,
                     musicList: songListMusic
