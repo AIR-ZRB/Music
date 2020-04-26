@@ -931,7 +931,7 @@ export default class RecommendMusic extends React.Component<any, any> {
 
 // 音乐列表
 function SongList(props: any) {
-    return props.songList.map((item: any,index:number) => {
+    return props.songList.map((item: any, index: number) => {
         return <li className="list" style={{ backgroundImage: `url(${item.picUrl})` }} key={item.id}>
             <span>{item.name}</span>
         </li>

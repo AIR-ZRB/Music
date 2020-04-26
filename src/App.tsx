@@ -180,12 +180,12 @@ class App extends React.Component<any, any> {
 
           <div className="column">
             <Redirect path="/" to="/recommendMusic" />
-            {/* <Route path="/recommendMusic" component={recommendMusic} /> */}
-            {/* <Route path="/personalFM" component={personalFM} />
+            <Route path="/recommendMusic" component={recommendMusic} />
+            <Route path="/personalFM" component={personalFM} />
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            <Route path="/songList" component={songList} /> */}
+            <Route path="/songList" component={songList} />
             {/* <ListColumn list={this.state.list} /> */}
           </div>
 
@@ -222,11 +222,11 @@ function ListLink(props: any) {
 }
 
 // 对应的列表
-function ListColumn(props: any) {
-  return props.list.map((item: any) => {
-    return <Route key={item.name} path={"/" + item.name} component={personalFM} />
-  })
-}
+// function ListColumn(props: any) {
+//   return props.list.map((item: any) => {
+//     return <Route key={item.name} path={"/" + item.name} component={personalFM} />
+//   })
+// }
 
 // 登录框组件
 function Login(props: any) {
