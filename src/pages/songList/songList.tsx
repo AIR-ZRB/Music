@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MusicSongList } from "../../components/MusicComponent";
+import { MusicSongList,AudioComponent } from "../../components/MusicComponent";
 
 
 export default class songList extends React.Component<any, any> {
@@ -8,15 +8,15 @@ export default class songList extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {}
-
     }
 
 
+
+
     render() {
-        console.log(this)
-        
         return (
-            <MusicSongList songListId={this.props.location.search.substr(4)}/>
+                <MusicSongList songListId={this.props.router.location.search.substr(4)} />
+
         )
     }
 }

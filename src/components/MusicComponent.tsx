@@ -207,14 +207,14 @@ export class MusicSongList extends React.Component<any, any> {
                     <NavList navList={this.state.navList} />
                     <MusicList musicList={this.state.musicList} />
                 </div>
-                {this.state.requestSusscess ? null : <Loading />}
+                {/* {this.state.requestSusscess ? null : <Loading />} */}
 
             </div>
         )
     }
 }
 
-
+// 加载动画
 export let Loading = (): any => {
     return <div className="loading">
         <div className="spinner-border text-primary" role="status">
@@ -222,4 +222,11 @@ export let Loading = (): any => {
         </div>
     </div>
 
+}
+
+
+// 音频
+export let AudioComponent = (props: any): any => {
+    console.log(props);
+    return  <audio src={props.musicUrl} autoPlay>你的浏览器不支持</audio>
 }

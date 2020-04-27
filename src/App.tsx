@@ -8,14 +8,10 @@ import personalFM from "./pages/personalFM/personalFM";
 import video from "./pages/video/video";
 import liveStreaming from "./pages/liveStreaming/liveStreaming";
 import friends from "./pages/friends/friends";
-import songList from "./pages/songList/songList";
+import SongList from "./pages/songList/songList";
 
 
 import { requestData } from "./components/MusicComponent";
-
-import {inject,observer} from "mobx-react";
-@inject('store');
-@observer
 
 
 
@@ -62,7 +58,16 @@ class App extends React.Component<any, any> {
           icon: "people",
           content: "朋友",
           select: false,
-        }
+        }, 
+        {
+          id: 5,
+          name: "songList",
+          icon: "people",
+          content: "sss",
+          select: false,
+        },
+        
+        
       ],
       login: {
         loginShow: false,     // 登录框是否显示
@@ -154,7 +159,7 @@ class App extends React.Component<any, any> {
 
 
   render(): any {
-    { console.log(this)}
+  console.log(this)
     return (
      
       <div className="App">
@@ -176,19 +181,23 @@ class App extends React.Component<any, any> {
           </div>
 
           <div className="column">
+
+           
             <Redirect path="/" to="/recommendMusic" />
             <Route path="/recommendMusic" component={recommendMusic} />
             <Route path="/personalFM" component={personalFM} />
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            <Route path="/songList" component={songList} />
-            {/* <ListColumn list={this.state.list} /> */}
+            {/* <Route path="/songList" component={songList} /> */}
+            <Route path="/songList" render={(routeProps: any)=>{return(<SongList router={routeProps} audio={this.state.audio}/>)}}></Route>
+            
+            
           </div>
 
         </HashRouter>
         {this.state.login.loginShow ? <Login toSetState={this.toSetState.bind(this)} reqLogin={this.reqLogin.bind(this)} /> : null}
-        {/* <AudioComponent /> */}
+       
         <div className="audio">
           <div className="audioCtrl">
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
@@ -215,7 +224,7 @@ class App extends React.Component<any, any> {
                 <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
               </div>
             </div>
-            <audio src="" ref={this.state.audio} />
+
 
           </div>
 
@@ -249,13 +258,6 @@ function ListLink(props: any) {
     </li>
   })
 }
-
-// 对应的列表
-// function ListColumn(props: any) {
-//   return props.list.map((item: any) => {
-//     return <Route key={item.name} path={"/" + item.name} component={personalFM} />
-//   })
-// }
 
 // 登录框组件
 function Login(props: any) {
