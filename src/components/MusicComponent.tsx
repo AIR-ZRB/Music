@@ -14,6 +14,11 @@ export let MusicList = (props: any): any => {
                 // 注意：如果没有版权或者没有的音乐你双击之后返回的也是null
                 // console.log(data.data[0].url);  // 音频地址，放入audio组件的src即可
                 props.getMusicUrl(data.data[0].url)     // 传给父组件，让audio组件播放
+                
+
+
+
+
             })
     }
 
@@ -236,5 +241,5 @@ export let Loading = (): any => {
 
 // 音频
 export let AudioComponent = (props: any): any => {
-    return  <audio src={props.musicUrl} autoPlay>你的浏览器不支持</audio>
+    return <audio src={props.musicUrl} autoPlay>你的浏览器不支持</audio>
 }

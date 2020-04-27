@@ -10,9 +10,7 @@ import liveStreaming from "./pages/liveStreaming/liveStreaming";
 import friends from "./pages/friends/friends";
 import SongList from "./pages/songList/songList";
 
-
 import { requestData } from "./components/MusicComponent";
-
 
 
 
@@ -58,16 +56,7 @@ class App extends React.Component<any, any> {
           icon: "people",
           content: "朋友",
           select: false,
-        }, 
-        {
-          id: 5,
-          name: "songList",
-          icon: "people",
-          content: "sss",
-          select: false,
-        },
-        
-        
+        }
       ],
       login: {
         loginShow: false,     // 登录框是否显示
@@ -77,7 +66,6 @@ class App extends React.Component<any, any> {
       },
       todaySongList: {},
       length: 0,
-      audio: React.createRef()
     }
 
 
@@ -103,8 +91,6 @@ class App extends React.Component<any, any> {
       editName: step
     })
   }
-
-
 
 
   // 发送登录请求
@@ -160,11 +146,11 @@ class App extends React.Component<any, any> {
 
   render(): any {
     return (
-     
+
       <div className="App">
         <HashRouter>
           <nav className={`navbar navbar-dark bg-${this.state.themeColor}`}>
-            {/* <a className="navbar-brand" href="http://localhost:3000/#/">基佬云音乐</a> */}
+            <a className="navbar-brand" href="http://localhost:3000/#/">青空云音乐</a>
 
             <div className="user">
               <img src={this.state.login.avatarUrl} alt="" />
@@ -181,22 +167,25 @@ class App extends React.Component<any, any> {
 
           <div className="column">
 
-           
+
             <Redirect path="/" to="/recommendMusic" />
             <Route path="/recommendMusic" component={recommendMusic} />
             <Route path="/personalFM" component={personalFM} />
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            {/* <Route path="/songList" component={songList} /> */}
-            <Route path="/songList" render={(routeProps: any)=>{return(<SongList router={routeProps} audio={this.state.audio}/>)}}></Route>
-            
-            
-          </div>
+            <Route path="/songList" render={(routeProps: any) => { return (<SongList router={routeProps} />) }}></Route>
 
+          </div>
         </HashRouter>
+
+
+        {/* 登录组件是否显示 */}
         {this.state.login.loginShow ? <Login toSetState={this.toSetState.bind(this)} reqLogin={this.reqLogin.bind(this)} /> : null}
-       
+
+
+
+        {/* 底部现在播放歌曲的进度条等 */}
         <div className="audio">
           <div className="audioCtrl">
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
@@ -228,6 +217,8 @@ class App extends React.Component<any, any> {
           </div>
 
         </div>
+
+
       </div>
     );
   }
@@ -302,13 +293,6 @@ function Login(props: any) {
     </div>
   </div>
 }
-
-
-// function AudioComponent(props: any): any {
-
-//   return
-// }
-
 
 
 export default App;
