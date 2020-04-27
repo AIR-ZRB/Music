@@ -15,8 +15,7 @@ export default class songList extends React.Component<any, any> {
 
     render() {
         return (
-                <MusicSongList songListId={this.props.router.location.search.substr(4)} />
-
+            <MusicSongList songListId={this.props.router.location.search.substr(4)} />
         )
     }
 }

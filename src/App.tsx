@@ -148,7 +148,7 @@ class App extends React.Component<any, any> {
         this.setState({
           length: this.state.navList.push(...songListData)
         })
-        console.log(songListData);
+        // console.log(songListData);
       })
 
   }
@@ -159,7 +159,6 @@ class App extends React.Component<any, any> {
 
 
   render(): any {
-  console.log(this)
     return (
      
       <div className="App">

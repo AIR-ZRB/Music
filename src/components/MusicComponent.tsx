@@ -6,16 +6,14 @@ import "./components.scss";
 // 音乐列表（歌单使用）
 export let MusicList = (props: any): any => {
 
+    // 请求到双击后的歌曲，并且把url给父组件的audio组件使用
     function playMusic(musicId: string) {
         let url = `http://localhost:4000/song/url?id=${musicId}`;
         requestData(url)
             .then((data: any) => {
-
-                // let audio = document.getElementById("audio");
-                // audio.src = data.data[0].url;
-                // audio.play();
-                console.log()
-
+                // 注意：如果没有版权或者没有的音乐你双击之后返回的也是null
+                // console.log(data.data[0].url);  // 音频地址，放入audio组件的src即可
+                props.getMusicUrl(data.data[0].url)     // 传给父组件，让audio组件播放
             })
     }
 
@@ -31,7 +29,7 @@ export let MusicList = (props: any): any => {
         </ul>
 
         {props.musicList.map((item: any, index: number) => {
-            return <ul key={`${item.musicId}+${index}`} onDoubleClick={() => console.log(item.musicId)}>
+            return <ul key={`${item.musicId}+${index}`} onDoubleClick={() => playMusic(item.musicId)}>
                 <li>1</li>
                 <li>Heart</li>
                 <li>{item.name}</li>
@@ -101,7 +99,6 @@ export class MusicSongList extends React.Component<any, any> {
         }
     }
 
-
     constructor(props: any) {
         super(props);
         this.state = {
@@ -122,12 +119,13 @@ export class MusicSongList extends React.Component<any, any> {
                     select: false
                 },
             ],
-            musicList: [],
-            requestSusscess: false,
+            musicList: [],                      // 获取歌单的音乐的列表
+            requestSusscess: false,             // 请求是否成功，成功则隐藏Loading
+            currentMusicUrl: ""                 // 当前播放音乐的URL
         }
     }
 
-
+    // 当组件被加载时
     componentWillMount() {
         this.reqCurrentSongListMusic(this.props.songListId);
         return true;
@@ -137,6 +135,15 @@ export class MusicSongList extends React.Component<any, any> {
     componentWillReceiveProps(nextProps: any) {
         this.reqCurrentSongListMusic(nextProps.songListId);
         return true;
+    }
+
+
+    // 传递给子组件的方法，用于获取双击之后music的src
+    getMusicUrl(url: string){
+        this.setState({
+            currentMusicUrl: url
+        })
+        console.log(url)
     }
 
 
@@ -163,7 +170,7 @@ export class MusicSongList extends React.Component<any, any> {
                     }
                 })
 
-                console.log(123123);
+               
                 this.setState({
                     requestSusscess: true,
                     musicList: songListMusic
@@ -173,7 +180,6 @@ export class MusicSongList extends React.Component<any, any> {
     }
 
     render() {
-        // console.log(this.props.songListId)      // 获取当前歌单id
 
         return (
             <div className="mySongList">
@@ -205,9 +211,12 @@ export class MusicSongList extends React.Component<any, any> {
 
                 <div className="currentSongList">
                     <NavList navList={this.state.navList} />
-                    <MusicList musicList={this.state.musicList} />
+                    <MusicList musicList={this.state.musicList}  getMusicUrl={this.getMusicUrl.bind(this)} />
                 </div>
-                {/* {this.state.requestSusscess ? null : <Loading />} */}
+
+                {/* Loading加载界面，暂时关闭 */}
+                {this.state.requestSusscess ? null : <Loading />}
+                <AudioComponent musicUrl={this.state.currentMusicUrl}/>
 
             </div>
         )
@@ -227,6 +236,5 @@ export let Loading = (): any => {
 
 // 音频
 export let AudioComponent = (props: any): any => {
-    console.log(props);
     return  <audio src={props.musicUrl} autoPlay>你的浏览器不支持</audio>
 }
