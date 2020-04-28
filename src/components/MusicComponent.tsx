@@ -7,15 +7,23 @@ import "./components.scss";
 export let MusicList = (props: any): any => {
 
     // 请求到双击后的歌曲，并且把url给父组件的audio组件使用
-    function playMusic(musicId: string) {
-        let url = `http://localhost:4000/song/url?id=${musicId}`;
+    function playMusic(currentMusicMessage: any) {
+        // console.log(currentMusicMessage.name);
+        // console.log(currentMusicMessage.albumPic);
+        // console.log(currentMusicMessage.avatarName);
+        
+        let url = `http://localhost:4000/song/url?id=${currentMusicMessage.musicId}`;
         requestData(url)
             .then((data: any) => {
                 // 注意：如果没有版权或者没有的音乐你双击之后返回的也是null
                 // console.log(data.data[0].url);  // 音频地址，放入audio组件的src即可
-                props.getMusicUrl(data.data[0].url)     // 传给父组件，让audio组件播放
+                props.getMusicUrl({
+                    musicName:currentMusicMessage.name,
+                    albumPic:currentMusicMessage.albumPic,
+                    avatarName: currentMusicMessage.avatarName,
+                    musicUrl: data.data[0].url
+                })     // 传给父组件，让audio组件播放
                 
-
 
 
 
@@ -34,7 +42,7 @@ export let MusicList = (props: any): any => {
         </ul>
 
         {props.musicList.map((item: any, index: number) => {
-            return <ul key={`${item.musicId}+${index}`} onDoubleClick={() => playMusic(item.musicId)}>
+            return <ul key={`${item.musicId}+${index}`} onDoubleClick={() => playMusic(item)}>
                 <li>1</li>
                 <li>Heart</li>
                 <li>{item.name}</li>
@@ -84,149 +92,149 @@ export let NavList = (props: any): any => {
 
 
 // 歌单列表
-export class MusicSongList extends React.Component<any, any> {
-    static defaultProps = {
-        data: {
-            coverImgUrl: "https://p2.music.126.net/apsoAvOWvOf--D1vfNl7Pg==/3296335861568246.jpg",        // 歌单的封面
-            name: "Skyblue_Air喜欢的音乐",               // 歌单的名字
-            id: "471267581",                  // 歌单的Id
-            avatarUrl: "http://p1.music.126.net/56_Km5Vsr0S8cIgiI-C0Mw==/109951164938014307.jpg",
-            nickname: "Skyblue_Air",
-            musicList: [
-                {
-                    like: true,
-                    musicName: "好像爱这个世界",
-                    singer: "华晨宇",
-                    album: "歌手·当打之年 第9期",
-                    time: "04:22"
-                }
-            ],
-        }
-    }
+// export class MusicSongList extends React.Component<any, any> {
+//     static defaultProps = {
+//         data: {
+//             coverImgUrl: "https://p2.music.126.net/apsoAvOWvOf--D1vfNl7Pg==/3296335861568246.jpg",        // 歌单的封面
+//             name: "Skyblue_Air喜欢的音乐",               // 歌单的名字
+//             id: "471267581",                  // 歌单的Id
+//             avatarUrl: "http://p1.music.126.net/56_Km5Vsr0S8cIgiI-C0Mw==/109951164938014307.jpg",
+//             nickname: "Skyblue_Air",
+//             musicList: [
+//                 {
+//                     like: true,
+//                     musicName: "好像爱这个世界",
+//                     singer: "华晨宇",
+//                     album: "歌手·当打之年 第9期",
+//                     time: "04:22"
+//                 }
+//             ],
+//         }
+//     }
 
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            navList: [
-                {
-                    name: "歌曲列表",
-                    urlName: "songLis",
-                    select: true
-                },
-                {
-                    name: "评论",
-                    urlName: "comment",
-                    select: false
-                },
-                {
-                    name: "收藏者",
-                    urlName: "collect",
-                    select: false
-                },
-            ],
-            musicList: [],                      // 获取歌单的音乐的列表
-            requestSusscess: false,             // 请求是否成功，成功则隐藏Loading
-            currentMusicUrl: ""                 // 当前播放音乐的URL
-        }
-    }
+//     constructor(props: any) {
+//         super(props);
+//         this.state = {
+//             navList: [
+//                 {
+//                     name: "歌曲列表",
+//                     urlName: "songLis",
+//                     select: true
+//                 },
+//                 {
+//                     name: "评论",
+//                     urlName: "comment",
+//                     select: false
+//                 },
+//                 {
+//                     name: "收藏者",
+//                     urlName: "collect",
+//                     select: false
+//                 },
+//             ],
+//             musicList: [],                      // 获取歌单的音乐的列表
+//             requestSusscess: false,             // 请求是否成功，成功则隐藏Loading
+//             currentMusicUrl: ""                 // 当前播放音乐的URL
+//         }
+//     }
 
-    // 当组件被加载时
-    componentWillMount() {
-        this.reqCurrentSongListMusic(this.props.songListId);
-        return true;
-    }
+//     // 当组件被加载时
+//     componentWillMount() {
+//         this.reqCurrentSongListMusic(this.props.songListId);
+//         return true;
+//     }
 
-    // 当props改变
-    componentWillReceiveProps(nextProps: any) {
-        this.reqCurrentSongListMusic(nextProps.songListId);
-        return true;
-    }
-
-
-    // 传递给子组件的方法，用于获取双击之后music的src
-    getMusicUrl(url: string){
-        this.setState({
-            currentMusicUrl: url
-        })
-        console.log(url)
-    }
+//     // 当props改变
+//     componentWillReceiveProps(nextProps: any) {
+//         this.reqCurrentSongListMusic(nextProps.songListId);
+//         return true;
+//     }
 
 
+//     // 传递给子组件的方法，用于获取双击之后music的src
+//     getMusicUrl(url: string){
+//         this.setState({
+//             currentMusicUrl: url
+//         })
+//         console.log(url)
+//     }
 
-    reqCurrentSongListMusic(songListId: string) {
-        let url = `http://localhost:4000/playlist/detail?id=${songListId}`;
-        console.log("start request")
-        this.setState({
-            requestSusscess: false
-        })
-        requestData(url)
-            .then((data: any) => {
-                let songListMusic = data.playlist.tracks.map((item: any, index: number) => {
-                    return {
-                        name: item.name,
-                        musicId: item.id,
-                        mvId: item.mv,
-                        avatarName: item.ar[0].name,
-                        avatarId: item.ar[0].id,
-                        describe: item.alia[0],
-                        albumPic: item.al.picUrl,
-                        albumName: item.al.name,
-                        albumId: item.al.id,
-                    }
-                })
+
+
+//     reqCurrentSongListMusic(songListId: string) {
+//         let url = `http://localhost:4000/playlist/detail?id=${songListId}`;
+//         console.log("start request")
+//         this.setState({
+//             requestSusscess: false
+//         })
+//         requestData(url)
+//             .then((data: any) => {
+//                 let songListMusic = data.playlist.tracks.map((item: any, index: number) => {
+//                     return {
+//                         name: item.name,
+//                         musicId: item.id,
+//                         mvId: item.mv,
+//                         avatarName: item.ar[0].name,
+//                         avatarId: item.ar[0].id,
+//                         describe: item.alia[0],
+//                         albumPic: item.al.picUrl,
+//                         albumName: item.al.name,
+//                         albumId: item.al.id,
+//                     }
+//                 })
 
                
-                this.setState({
-                    requestSusscess: true,
-                    musicList: songListMusic
-                })
+//                 this.setState({
+//                     requestSusscess: true,
+//                     musicList: songListMusic
+//                 })
 
-            })
-    }
+//             })
+//     }
 
-    render() {
+//     render() {
 
-        return (
-            <div className="mySongList">
-                <div className="listMessage">
-                    <section className="picture">
-                        <img src={this.props.data.coverImgUrl} alt="" className="coverImg" />
-                    </section>
-                    <section className="message">
-                        <h3>{this.props.data.name}</h3>
-
-
-                        <div className="listCreate">
-                            <img src={this.props.data.avatarUrl} alt="" className="avatar" />
-                            <p>
-                                <span className="user">{this.props.data.nickname}</span>
-                                <span className="createTime">创建时间：2016-1-1</span>
-                            </p>
-                        </div>
+//         return (
+//             <div className="mySongList">
+//                 <div className="listMessage">
+//                     <section className="picture">
+//                         <img src={this.props.data.coverImgUrl} alt="" className="coverImg" />
+//                     </section>
+//                     <section className="message">
+//                         <h3>{this.props.data.name}</h3>
 
 
-                        <section className="btn-ctrl">
-                            <button type="button" className="btn btn-primary">播放全部</button>
-                            <button type="button" className="btn btn-light">收藏</button>
-                            <button type="button" className="btn btn-light">分享</button>
-                            <button type="button" className="btn btn-light">下载</button>
-                        </section>
-                    </section>
-                </div>
+//                         <div className="listCreate">
+//                             <img src={this.props.data.avatarUrl} alt="" className="avatar" />
+//                             <p>
+//                                 <span className="user">{this.props.data.nickname}</span>
+//                                 <span className="createTime">创建时间：2016-1-1</span>
+//                             </p>
+//                         </div>
 
-                <div className="currentSongList">
-                    <NavList navList={this.state.navList} />
-                    <MusicList musicList={this.state.musicList}  getMusicUrl={this.getMusicUrl.bind(this)} />
-                </div>
 
-                {/* Loading加载界面，暂时关闭 */}
-                {this.state.requestSusscess ? null : <Loading />}
-                <AudioComponent musicUrl={this.state.currentMusicUrl}/>
+//                         <section className="btn-ctrl">
+//                             <button type="button" className="btn btn-primary">播放全部</button>
+//                             <button type="button" className="btn btn-light">收藏</button>
+//                             <button type="button" className="btn btn-light">分享</button>
+//                             <button type="button" className="btn btn-light">下载</button>
+//                         </section>
+//                     </section>
+//                 </div>
 
-            </div>
-        )
-    }
-}
+//                 <div className="currentSongList">
+//                     <NavList navList={this.state.navList} />
+//                     <MusicList musicList={this.state.musicList}  getMusicUrl={this.getMusicUrl.bind(this)} />
+//                 </div>
+
+//                 {/* Loading加载界面，暂时关闭 */}
+//                 {this.state.requestSusscess ? null : <Loading />}
+//                 <AudioComponent musicUrl={this.state.currentMusicUrl}/>
+
+//             </div>
+//         )
+//     }
+// }
 
 // 加载动画
 export let Loading = (): any => {
@@ -241,5 +249,8 @@ export let Loading = (): any => {
 
 // 音频
 export let AudioComponent = (props: any): any => {
-    return <audio src={props.musicUrl} autoPlay>你的浏览器不支持</audio>
+    // console.log("音乐组件")
+    // console.log(props.isPlay);
+   
+    return <audio src={props.musicUrl} autoPlay >你的浏览器不支持</audio>
 }

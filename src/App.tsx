@@ -14,6 +14,7 @@ import { requestData } from "./components/MusicComponent";
 
 
 
+
 class App extends React.Component<any, any> {
 
   constructor(props: any) {
@@ -56,7 +57,14 @@ class App extends React.Component<any, any> {
           icon: "people",
           content: "朋友",
           select: false,
-        }
+        },
+        // {
+        //   id: 5,
+        //   name: "songList",
+        //   icon: "songList",
+        //   content: "songList",
+        //   select: false,
+        // }
       ],
       login: {
         loginShow: false,     // 登录框是否显示
@@ -64,7 +72,14 @@ class App extends React.Component<any, any> {
         avatarUrl: "",        // 头像
         loginState: false     // 是否登录
       },
+      musicCtrl:{
+        musicName: "空",
+        avatarName: "空",
+        albumPic: "https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg",
+        play: false
+      },
       todaySongList: {},
+
       length: 0,
     }
 
@@ -140,6 +155,19 @@ class App extends React.Component<any, any> {
   }
 
 
+  // 获取当前播放音乐的信息
+  getCurrentPlayMusic(message: any){
+    console.log("获取目前歌曲的信息")
+    console.log(message)
+    this.toSetState("musicCtrl",message);
+   
+  }
+  playAndPause(){
+    let play = {
+      play: !this.state.musicCtrl.play
+    }
+    this.toSetState("musicCtrl",play);
+  }
 
 
 
@@ -174,7 +202,10 @@ class App extends React.Component<any, any> {
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            <Route path="/songList" render={(routeProps: any) => { return (<SongList router={routeProps} />) }}></Route>
+            <Route path="/songList" render={(routeProps: any) => { return (  
+                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic.bind(this)}  musicIsPlay={this.state.musicCtrl} />
+            )  
+            }}></Route>
 
           </div>
         </HashRouter>
@@ -189,16 +220,18 @@ class App extends React.Component<any, any> {
         <div className="audio">
           <div className="audioCtrl">
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
-            <span><img src={process.env.PUBLIC_URL + `/icons/play.svg`} alt="" /></span>
+            <span onClick={this.playAndPause.bind(this)}>
+              <img src={this.state.musicCtrl.play ? process.env.PUBLIC_URL + `/icons/pause.svg`  : process.env.PUBLIC_URL + `/icons/play.svg`} alt="" />
+            </span>
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-end.svg`} alt="" /></span>
           </div>
 
 
           <div className="currentSong">
-            <img src="https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg" alt="" className="avatarImg" />
+            <img src={this.state.musicCtrl.albumPic} alt="" className="avatarImg" />
             <section className="avatar">
-              <p title="昨日青空">昨日青空</p>
-              <p>尤长靖</p>
+              <p title={this.state.musicCtrl.musicName}>{this.state.musicCtrl.musicName}</p>
+              <p>{this.state.musicCtrl.avatarName}</p>
             </section>
 
 
