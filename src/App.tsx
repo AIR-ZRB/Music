@@ -12,6 +12,7 @@ import SongList from "./pages/songList/songList";
 
 import { requestData } from "./components/MusicComponent";
 
+import { connect } from "react-redux";
 
 
 
@@ -110,6 +111,10 @@ class App extends React.Component<any, any> {
 
   // 发送登录请求
   reqLogin(username: string, password: any): void {
+    console.log(this.props);
+    const {dispatch} = this.props;
+    dispatch({type: "edit",musicUrl: "12312321"}) 
+
     let url = `http://localhost:4000/login/cellphone?phone=${username}&password=${password}`;
 
     requestData(url)
@@ -326,4 +331,14 @@ function Login(props: any) {
 }
 
 
-export default App;
+
+const mapStateToProps = (state: any) => {
+  console.log(mapStateToProps)
+  return {
+    store: state
+  }
+}
+
+
+
+export default connect(mapStateToProps)(App);
