@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NavList,MusicList,AudioComponent,Loading,requestData } from "../../components/MusicComponent";
+import { NavList, MusicList, AudioComponent, Loading, requestData } from "../../components/MusicComponent";
 
 
 export default class songList extends React.Component<any, any> {
@@ -47,19 +47,19 @@ export default class songList extends React.Component<any, any> {
             musicList: [],                      // 获取歌单的音乐的列表
             requestSusscess: false,             // 请求是否成功，成功则隐藏Loading
             currentMusicUrl: "",                // 当前播放音乐的URL
-            audio:React.createRef()
+            audio: ""
         }
-       
+
 
     }
-   
+
 
     // 当组件被加载时
     componentWillMount() {
         // console.log(this)
         this.reqCurrentSongListMusic(this.props.router.location.search.substr(4));
         return true;
-       
+
     }
 
     // 当props改变
@@ -70,15 +70,15 @@ export default class songList extends React.Component<any, any> {
 
 
         // 当音乐按下了暂停
-        // console.log(this.state.audio.current)
-        console.log(this)
+        console.log(this);
+
 
         return true;
     }
 
 
     // 传递给子组件的方法，用于获取双击之后music的src
-    getMusicUrl(currentMusicMessage: any){
+    getMusicUrl(currentMusicMessage: any) {
 
         console.log(currentMusicMessage.musicUrl);
         this.setState({
@@ -87,6 +87,7 @@ export default class songList extends React.Component<any, any> {
         this.props.getCurrentPlayMusic(currentMusicMessage);
     }
 
+    // 请求当前音乐列表里的音乐
     reqCurrentSongListMusic(songListId: string) {
         let url = `http://localhost:4000/playlist/detail?id=${songListId}`;
         console.log("start request");
@@ -109,7 +110,7 @@ export default class songList extends React.Component<any, any> {
                     }
                 })
 
-               
+
                 this.setState({
                     requestSusscess: true,
                     musicList: songListMusic
@@ -117,6 +118,11 @@ export default class songList extends React.Component<any, any> {
 
             })
     }
+
+    getAudio(audio: any) {
+    //   audio获取音乐组件
+    }
+
 
     render() {
         return (
@@ -147,6 +153,9 @@ export default class songList extends React.Component<any, any> {
                     </section>
                 </div>
 
+
+                <button onClick={()=>{this.state.audio.pause()}}>asdklfjsdalkjflksdjafjsdklafjsdlkaf</button>
+
                 <div className="currentSongList">
                     <NavList navList={this.state.navList} />
                     <MusicList musicList={this.state.musicList} getMusicUrl={this.getMusicUrl.bind(this)} />
@@ -154,7 +163,7 @@ export default class songList extends React.Component<any, any> {
 
                 {/* Loading加载界面，暂时关闭 */}
                 {this.state.requestSusscess ? null : <Loading />}
-                <AudioComponent musicUrl={this.state.currentMusicUrl}  isPlay={this.props.musicIsPlay.play} ref={this.state.audio}/>
+                <AudioComponent musicUrl={this.state.currentMusicUrl} getAudio={this.getAudio.bind(this)} />
 
             </div>
 

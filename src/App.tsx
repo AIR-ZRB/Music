@@ -169,8 +169,7 @@ class App extends React.Component<any, any> {
     this.toSetState("musicCtrl",play);
   }
 
-
-
+ 
 
   render(): any {
     return (
@@ -245,7 +244,6 @@ class App extends React.Component<any, any> {
                 <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
               </div>
             </div>
-
 
           </div>
 
