@@ -2,8 +2,9 @@ import React from "react";
 
 import { NavList, MusicList, AudioComponent, Loading, requestData } from "../../components/MusicComponent";
 
+import { connect } from "react-redux";
 
-export default class songList extends React.Component<any, any> {
+class songList extends React.Component<any, any> {
 
     static defaultProps = {
         data: {
@@ -56,7 +57,6 @@ export default class songList extends React.Component<any, any> {
 
     // 当组件被加载时
     componentWillMount() {
-        // console.log(this)
         this.reqCurrentSongListMusic(this.props.router.location.search.substr(4));
         return true;
 
@@ -70,7 +70,7 @@ export default class songList extends React.Component<any, any> {
 
 
         // 当音乐按下了暂停
-        console.log(this);
+        // console.log(this);
 
 
         return true;
@@ -79,18 +79,21 @@ export default class songList extends React.Component<any, any> {
 
     // 传递给子组件的方法，用于获取双击之后music的src
     getMusicUrl(currentMusicMessage: any) {
-
+        console.log("dbClick");
         console.log(currentMusicMessage.musicUrl);
         this.setState({
             currentMusicUrl: currentMusicMessage.musicUrl
         })
         this.props.getCurrentPlayMusic(currentMusicMessage);
+        this.props.dispatch({type: "musicUrl",data: currentMusicMessage.musicUrl}) 
     }
 
     // 请求当前音乐列表里的音乐
     reqCurrentSongListMusic(songListId: string) {
+        console.log("开始请求歌单里的音乐");
+
+
         let url = `http://localhost:4000/playlist/detail?id=${songListId}`;
-        console.log("start request");
         this.setState({
             requestSusscess: false
         })
@@ -163,7 +166,7 @@ export default class songList extends React.Component<any, any> {
 
                 {/* Loading加载界面，暂时关闭 */}
                 {this.state.requestSusscess ? null : <Loading />}
-                <AudioComponent musicUrl={this.state.currentMusicUrl} getAudio={this.getAudio.bind(this)} />
+                {/* <AudioComponent musicUrl={this.state.currentMusicUrl}/> */}
 
             </div>
 
@@ -171,3 +174,14 @@ export default class songList extends React.Component<any, any> {
         )
     }
 }
+
+
+
+const mapStateToProps = (state: any) => {
+    return {
+      store: state
+    }
+  }
+
+
+export default connect(mapStateToProps)(songList)

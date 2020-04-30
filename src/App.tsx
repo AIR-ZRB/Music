@@ -59,13 +59,13 @@ class App extends React.Component<any, any> {
           content: "朋友",
           select: false,
         },
-        // {
-        //   id: 5,
-        //   name: "songList",
-        //   icon: "songList",
-        //   content: "songList",
-        //   select: false,
-        // }
+        {
+          id: 5,
+          name: "songList",
+          icon: "songList",
+          content: "songList",
+          select: false,
+        }
       ],
       login: {
         loginShow: false,     // 登录框是否显示
@@ -77,7 +77,8 @@ class App extends React.Component<any, any> {
         musicName: "空",
         avatarName: "空",
         albumPic: "https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg",
-        play: false
+        play: false,
+        musicUrl: ""
       },
       todaySongList: {},
 
@@ -111,9 +112,12 @@ class App extends React.Component<any, any> {
 
   // 发送登录请求
   reqLogin(username: string, password: any): void {
-    console.log(this.props);
+    
     const {dispatch} = this.props;
-    dispatch({type: "edit",musicUrl: "12312321"}) 
+    // this.props.store.musicUrl.dispatch({type: "edit",musicUrl: "12312321"}) 
+    dispatch({type: "musicUrl",data: "http://m701.music.126.net/20200430210159/b39ddf203344ca27b43b2fa8592c4b32/jdymusic/obj/w5zDlMODwrDDiGjCn8Ky/1568662731/2059/7262/3d4e/74a36f21fb591a3c093b40e9bbd1b58e.mp3"}) 
+    dispatch({type: "musicPlay",data: "play"}) 
+    console.log(this.props.store)
 
     let url = `http://localhost:4000/login/cellphone?phone=${username}&password=${password}`;
 
@@ -175,6 +179,14 @@ class App extends React.Component<any, any> {
   }
 
  
+  componentWillReceiveProps(nextProps: any) {
+    console.log("App 监视props已变化") 
+    this.toSetState("musicCtrl",{musicUrl: nextProps.store.musicUrl});
+  
+
+    
+    return true;
+}
 
   render(): any {
     return (
@@ -249,6 +261,7 @@ class App extends React.Component<any, any> {
                 <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
               </div>
             </div>
+            <audio src={this.state.musicCtrl.musicUrl} autoPlay></audio>
 
           </div>
 
@@ -333,12 +346,10 @@ function Login(props: any) {
 
 
 const mapStateToProps = (state: any) => {
-  console.log(mapStateToProps)
   return {
     store: state
   }
 }
-
 
 
 export default connect(mapStateToProps)(App);
