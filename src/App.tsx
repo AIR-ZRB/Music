@@ -69,9 +69,14 @@ class App extends React.Component<any, any> {
         musicName: "空",
         avatarName: "空",
         albumPic: "https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg",
-        play: false,
         musicUrl: "",
-        durationSecond: "0",
+        // 播放，时间相关
+        play: false,
+        timer: "",
+        speed: 100,
+        playDuration: 0,
+        playPercentage: 0,
+        durationSecond: 0,
         durationMinute: "00:00"
       },
       todaySongList: {},
@@ -151,28 +156,58 @@ class App extends React.Component<any, any> {
   getCurrentPlayMusic = (message: any): void => {
     console.log("获取目前歌曲的信息")
     this.toSetState("musicCtrl", message);
+    const audio: any = this.getAudioComponent();
+    // 获取双击之后音乐的秒数
+    audio.load();
+    audio.oncanplay = () => {
+      // 开启定时器
+      console.log(audio.duration)
+      let timer = setInterval(() => {
+        this.currentPlayTime(parseInt(audio.duration));
+      }, this.state.musicCtrl.speed)
 
-    // const audio: any = this.getAudioComponent();
+      // 清空之前的的数据
+      this.toSetState("musicCtrl", { durationSecond: audio.duration, playDuration: 0, playPercentage: 0, timer: timer });
+
+    }
+
+
 
   }
-  
+
+  // 进度条滚动
+  currentPlayTime = (musicDuration: number) => {
+
+    if (this.state.musicCtrl.durationSecond > this.state.musicCtrl.playDuration) {
+      let percentage: number = (this.state.musicCtrl.playDuration / musicDuration) * 100;
+      this.toSetState("musicCtrl", { playDuration: this.state.musicCtrl.playDuration + 0.1, playPercentage: percentage + "" });
+    } else {
+      clearInterval(this.state.musicCtrl.timer);
+    }
+
+  }
+
 
   // 音乐点击暂停或者开始
   playAndPause = () => {
-
     if (!this.state.musicCtrl.musicUrl) {
       return;
     }
-
     const audio: any = this.getAudioComponent();
-    
 
     // 由于setState还是dispatch都有延迟，所有这么写是可以的
     this.toSetState("musicCtrl", { play: !this.state.musicCtrl.play });
-    let flag = !this.state.musicCtrl.play
-
-    console.log(flag);
-    flag ? audio.play() : audio.pause();
+    let flag = !this.state.musicCtrl.play;
+    if (flag) {
+      audio.play();
+      let timer = setInterval(() => {
+        this.currentPlayTime(this.state.musicCtrl.durationSecond);
+      }, this.state.musicCtrl.speed)
+      this.toSetState("musicCtrl", { timer: timer });
+    } else {
+      audio.pause();
+      clearInterval(this.state.musicCtrl.timer)
+    }
 
   }
 
@@ -187,8 +222,12 @@ class App extends React.Component<any, any> {
 
   // props变化
   componentWillReceiveProps(nextProps: any) {
-    console.log("App 监视props已变化");
-    this.toSetState("musicCtrl", { musicUrl: nextProps.store.musicUrl, play: nextProps.store.musicPlay });
+
+    if (!(JSON.stringify(nextProps) == JSON.stringify(this.props))) {
+      console.log("App 监视props已变化");
+      this.toSetState("musicCtrl", { musicUrl: nextProps.store.musicUrl, play: nextProps.store.musicPlay });
+    }
+
     return true;
   }
 
@@ -224,7 +263,7 @@ class App extends React.Component<any, any> {
             <Route path="/friends" component={friends} />
             <Route path="/songList" render={(routeProps: any) => {
               return (
-                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic}/>
+                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic} />
               )
             }}></Route>
 
@@ -257,7 +296,7 @@ class App extends React.Component<any, any> {
 
 
             <div className="progress">
-          <div className="progress-bar" role="progressbar" style={{ width: "65%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>{this.state.musicCtrl.durationSecond}</div>
+              <div className="progress-bar" role="progressbar" style={{ width: `${this.state.musicCtrl.playPercentage}%` }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>{this.state.musicCtrl.playPercentage}%</div>
             </div>
 
             <div className="voice">
