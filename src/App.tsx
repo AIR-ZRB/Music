@@ -65,7 +65,7 @@ class App extends React.Component<any, any> {
         avatarUrl: "",        // 头像
         loginState: false     // 是否登录
       },
-      musicCtrl:{
+      musicCtrl: {
         musicName: "空",
         avatarName: "空",
         albumPic: "https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg",
@@ -92,9 +92,7 @@ class App extends React.Component<any, any> {
     })
   };
 
-
-
-  setData = (editName: any, step: any = 11):void => {
+  setData = (editName: any, step: any = 11): void => {
     this.setState({
       editName: step
     })
@@ -103,11 +101,6 @@ class App extends React.Component<any, any> {
 
   // 发送登录请求
   reqLogin = (username: string, password: any): void => {
-    
-    const {dispatch} = this.props;
-    dispatch({type: "musicUrl",data: ""}) 
-    dispatch({type: "musicPlay",data: "play"}) 
-
     let url = `http://localhost:4000/login/cellphone?phone=${username}&password=${password}`;
     requestData(url)
       .then((data: any) => {
@@ -146,61 +139,58 @@ class App extends React.Component<any, any> {
         this.setState({
           length: this.state.navList.push(...songListData)
         })
-        
+
       })
 
   }
 
 
   // 获取当前播放音乐的信息
-  getCurrentPlayMusic = (message: any):void =>{
+  getCurrentPlayMusic = (message: any): void => {
     console.log("获取目前歌曲的信息")
     console.log(message)
-    this.toSetState("musicCtrl",message);
-   
+    this.toSetState("musicCtrl", message);
+
   }
 
   // 音乐点击暂停或者开始
-  playAndPause =()=>{
+  playAndPause = () => {
+
+    if (!this.state.musicCtrl.musicUrl) {
+      return;
+    }
+
     let audio: any = this.getAudioComponent();
 
-  
-    let play = {play: !this.state.musicCtrl.play}
-    this.toSetState("musicCtrl",play);
+    // 由于setState还是dispatch都有延迟，所有这么写是可以的
+    this.toSetState("musicCtrl", { play: !this.state.musicCtrl.play });
+    let flag = !this.state.musicCtrl.play
 
-    this.state.musicCtrl.play ? audio.play() : audio.pause();
+    console.log(flag);
+    flag ? audio.play() : audio.pause();
+
   }
 
   // 使用闭包来获取audio组件
-  getAudio=(audio: any)=>{
+  getAudio = (audio: any) => {
     let audioComponent = audio;
-    return function(){
-      if(audioComponent){
-        return audioComponent
-      }else {
-        return "未获取组件"
-      }
+    return function () {
+      return audioComponent ? audioComponent : "未获取组件";
     }
   }
-  getAudioComponent=()=>{
-
-  }
+  getAudioComponent = () => { }
 
   // props变化
   componentWillReceiveProps(nextProps: any) {
-    console.log("App 监视props已变化") 
-    console.log(this.state.musicCtrl)
-    this.toSetState("musicCtrl",{musicUrl: nextProps.store.musicUrl});
+    console.log("App 监视props已变化");
+    this.toSetState("musicCtrl", { musicUrl: nextProps.store.musicUrl, play: nextProps.store.musicPlay });
     return true;
   }
 
   render(): any {
     return (
-
       <div className="App">
-
-
-        <audio src={this.state.musicCtrl.musicUrl} autoPlay ref={(audio)=>{this.getAudioComponent = this.getAudio(audio)}}></audio>
+        <audio src={this.state.musicCtrl.musicUrl} autoPlay ref={(audio) => { this.getAudioComponent = this.getAudio(audio) }}></audio>
 
         <HashRouter>
           {/* 顶部导航栏 */}
@@ -227,9 +217,10 @@ class App extends React.Component<any, any> {
             <Route path="/video" component={video} />
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
-            <Route path="/songList" render={(routeProps: any) => { return (  
-                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic}  musicIsPlay={this.state.musicCtrl} />
-            )  
+            <Route path="/songList" render={(routeProps: any) => {
+              return (
+                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic} musicIsPlay={this.state.musicCtrl} />
+              )
             }}></Route>
 
           </div>
@@ -246,7 +237,7 @@ class App extends React.Component<any, any> {
           <div className="audioCtrl">
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
             <span onClick={this.playAndPause}>
-              <img src={this.state.musicCtrl.play ? process.env.PUBLIC_URL + `/icons/pause.svg`  : process.env.PUBLIC_URL + `/icons/play.svg`} alt="" />
+              <img src={this.state.musicCtrl.play ? process.env.PUBLIC_URL + `/icons/pause.svg` : process.env.PUBLIC_URL + `/icons/play.svg`} alt="" />
             </span>
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-end.svg`} alt="" /></span>
           </div>
@@ -272,9 +263,6 @@ class App extends React.Component<any, any> {
             </div>
           </div>
         </div>
-
-
-       
       </div>
     );
   }

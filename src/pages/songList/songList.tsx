@@ -74,6 +74,7 @@ class songList extends React.Component<any, any> {
         console.log(currentMusicMessage.musicUrl);
         this.props.getCurrentPlayMusic(currentMusicMessage);
         this.props.dispatch({type: "musicUrl",data: currentMusicMessage.musicUrl});     // 当前播放的URL用Redux管理 
+        this.props.dispatch({type: "musicPlay",data: true});     // 当前播放的URL用Redux管理 
     }
 
     // 请求当前音乐列表里的音乐

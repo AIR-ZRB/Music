@@ -9,7 +9,7 @@ let musicUrl = (state = "12321", action) => {
   }
 };
 
-let musicPlay = (state = "pause", action) => {
+let musicPlay = (state = false, action) => {
   switch (action.type) {
     case "musicPlay":
       return (state = action.data);
