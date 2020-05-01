@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NavList, MusicList, AudioComponent, Loading, requestData } from "../../components/MusicComponent";
+import { NavList, MusicList, Loading, requestData } from "../../components/MusicComponent";
 
 import { connect } from "react-redux";
 
@@ -47,7 +47,6 @@ class songList extends React.Component<any, any> {
             ],
             musicList: [],                      // 获取歌单的音乐的列表
             requestSusscess: false,             // 请求是否成功，成功则隐藏Loading
-            currentMusicUrl: "",                // 当前播放音乐的URL
             audio: ""
         }
 
@@ -59,20 +58,12 @@ class songList extends React.Component<any, any> {
     componentWillMount() {
         this.reqCurrentSongListMusic(this.props.router.location.search.substr(4));
         return true;
-
     }
 
     // 当props改变
     componentWillReceiveProps(nextProps: any) {
-        // this.reqCurrentSongListMusic(nextProps.songListId);
         // 当路由发生改变
         this.reqCurrentSongListMusic(nextProps.router.location.search.substr(4));
-
-
-        // 当音乐按下了暂停
-        // console.log(this);
-
-
         return true;
     }
 
@@ -81,11 +72,8 @@ class songList extends React.Component<any, any> {
     getMusicUrl(currentMusicMessage: any) {
         console.log("dbClick");
         console.log(currentMusicMessage.musicUrl);
-        this.setState({
-            currentMusicUrl: currentMusicMessage.musicUrl
-        })
         this.props.getCurrentPlayMusic(currentMusicMessage);
-        this.props.dispatch({type: "musicUrl",data: currentMusicMessage.musicUrl}) 
+        this.props.dispatch({type: "musicUrl",data: currentMusicMessage.musicUrl});     // 当前播放的URL用Redux管理 
     }
 
     // 请求当前音乐列表里的音乐
@@ -122,11 +110,6 @@ class songList extends React.Component<any, any> {
             })
     }
 
-    getAudio(audio: any) {
-    //   audio获取音乐组件
-    }
-
-
     render() {
         return (
             <div className="mySongList">
@@ -156,9 +139,6 @@ class songList extends React.Component<any, any> {
                     </section>
                 </div>
 
-
-                <button onClick={()=>{this.state.audio.pause()}}>asdklfjsdalkjflksdjafjsdklafjsdlkaf</button>
-
                 <div className="currentSongList">
                     <NavList navList={this.state.navList} />
                     <MusicList musicList={this.state.musicList} getMusicUrl={this.getMusicUrl.bind(this)} />
@@ -166,8 +146,6 @@ class songList extends React.Component<any, any> {
 
                 {/* Loading加载界面，暂时关闭 */}
                 {this.state.requestSusscess ? null : <Loading />}
-                {/* <AudioComponent musicUrl={this.state.currentMusicUrl}/> */}
-
             </div>
 
 

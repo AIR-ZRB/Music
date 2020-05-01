@@ -20,7 +20,6 @@ class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
-
     this.state = {
       themeColor: "primary",
       navList: [
@@ -58,13 +57,6 @@ class App extends React.Component<any, any> {
           icon: "people",
           content: "朋友",
           select: false,
-        },
-        {
-          id: 5,
-          name: "songList",
-          icon: "songList",
-          content: "songList",
-          select: false,
         }
       ],
       login: {
@@ -81,7 +73,6 @@ class App extends React.Component<any, any> {
         musicUrl: ""
       },
       todaySongList: {},
-
       length: 0,
     }
 
@@ -89,7 +80,7 @@ class App extends React.Component<any, any> {
   };
 
   // 信息更新，登录框显示与隐藏,
-  toSetState(attr: string, newData: any): void {
+  toSetState = (attr: string, newData: any): void => {
     let getLogin = JSON.parse(JSON.stringify(this.state[attr]));
 
     for (let key in newData) {
@@ -103,7 +94,7 @@ class App extends React.Component<any, any> {
 
 
 
-  setData(editName: any, step: any = 11) {
+  setData = (editName: any, step: any = 11):void => {
     this.setState({
       editName: step
     })
@@ -111,16 +102,13 @@ class App extends React.Component<any, any> {
 
 
   // 发送登录请求
-  reqLogin(username: string, password: any): void {
+  reqLogin = (username: string, password: any): void => {
     
     const {dispatch} = this.props;
-    // this.props.store.musicUrl.dispatch({type: "edit",musicUrl: "12312321"}) 
-    dispatch({type: "musicUrl",data: "http://m701.music.126.net/20200430210159/b39ddf203344ca27b43b2fa8592c4b32/jdymusic/obj/w5zDlMODwrDDiGjCn8Ky/1568662731/2059/7262/3d4e/74a36f21fb591a3c093b40e9bbd1b58e.mp3"}) 
+    dispatch({type: "musicUrl",data: ""}) 
     dispatch({type: "musicPlay",data: "play"}) 
-    console.log(this.props.store)
 
     let url = `http://localhost:4000/login/cellphone?phone=${username}&password=${password}`;
-
     requestData(url)
       .then((data: any) => {
         this.toSetState("login", {
@@ -138,7 +126,7 @@ class App extends React.Component<any, any> {
 
 
   // 请求歌单（应该放到登录完后）
-  reqSongList(userId: string): void {
+  reqSongList = (userId: string): void => {
     let url = `http://localhost:4000/user/playlist?uid=${userId}`;
 
     let songListData = [];
@@ -158,60 +146,81 @@ class App extends React.Component<any, any> {
         this.setState({
           length: this.state.navList.push(...songListData)
         })
-        // console.log(songListData);
+        
       })
 
   }
 
 
   // 获取当前播放音乐的信息
-  getCurrentPlayMusic(message: any){
+  getCurrentPlayMusic = (message: any):void =>{
     console.log("获取目前歌曲的信息")
     console.log(message)
     this.toSetState("musicCtrl",message);
    
   }
-  playAndPause(){
-    let play = {
-      play: !this.state.musicCtrl.play
-    }
+
+  // 音乐点击暂停或者开始
+  playAndPause =()=>{
+    let audio: any = this.getAudioComponent();
+
+  
+    let play = {play: !this.state.musicCtrl.play}
     this.toSetState("musicCtrl",play);
+
+    this.state.musicCtrl.play ? audio.play() : audio.pause();
   }
 
- 
+  // 使用闭包来获取audio组件
+  getAudio=(audio: any)=>{
+    let audioComponent = audio;
+    return function(){
+      if(audioComponent){
+        return audioComponent
+      }else {
+        return "未获取组件"
+      }
+    }
+  }
+  getAudioComponent=()=>{
+
+  }
+
+  // props变化
   componentWillReceiveProps(nextProps: any) {
     console.log("App 监视props已变化") 
+    console.log(this.state.musicCtrl)
     this.toSetState("musicCtrl",{musicUrl: nextProps.store.musicUrl});
-  
-
-    
     return true;
-}
+  }
 
   render(): any {
     return (
 
       <div className="App">
+
+
+        <audio src={this.state.musicCtrl.musicUrl} autoPlay ref={(audio)=>{this.getAudioComponent = this.getAudio(audio)}}></audio>
+
         <HashRouter>
+          {/* 顶部导航栏 */}
           <nav className={`navbar navbar-dark bg-${this.state.themeColor}`}>
             <a className="navbar-brand" href="http://localhost:3000/#/">青空云音乐</a>
-
             <div className="user">
               <img src={this.state.login.avatarUrl} alt="" />
               <span onClick={() => this.toSetState("login", { loginShow: true })}>{this.state.login.nickname}</span>
             </div>
-
           </nav>
 
+          {/* 左边的列表 */}
           <div className="navList">
             <ul>
-              <ListLink navList={this.state.navList} edit={this.setData.bind(this)} />
+              <ListLink navList={this.state.navList} edit={this.setData} />
             </ul>
           </div>
 
+          {/* 右边对应的内容 */}
           <div className="column">
-
-
             <Redirect path="/" to="/recommendMusic" />
             <Route path="/recommendMusic" component={recommendMusic} />
             <Route path="/personalFM" component={personalFM} />
@@ -219,7 +228,7 @@ class App extends React.Component<any, any> {
             <Route path="/liveStreaming" component={liveStreaming} />
             <Route path="/friends" component={friends} />
             <Route path="/songList" render={(routeProps: any) => { return (  
-                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic.bind(this)}  musicIsPlay={this.state.musicCtrl} />
+                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic}  musicIsPlay={this.state.musicCtrl} />
             )  
             }}></Route>
 
@@ -228,7 +237,7 @@ class App extends React.Component<any, any> {
 
 
         {/* 登录组件是否显示 */}
-        {this.state.login.loginShow ? <Login toSetState={this.toSetState.bind(this)} reqLogin={this.reqLogin.bind(this)} /> : null}
+        {this.state.login.loginShow ? <Login toSetState={this.toSetState} reqLogin={this.reqLogin} /> : null}
 
 
 
@@ -236,7 +245,7 @@ class App extends React.Component<any, any> {
         <div className="audio">
           <div className="audioCtrl">
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-start.svg`} alt="" /></span>
-            <span onClick={this.playAndPause.bind(this)}>
+            <span onClick={this.playAndPause}>
               <img src={this.state.musicCtrl.play ? process.env.PUBLIC_URL + `/icons/pause.svg`  : process.env.PUBLIC_URL + `/icons/play.svg`} alt="" />
             </span>
             <span><img src={process.env.PUBLIC_URL + `/icons/Skip-end.svg`} alt="" /></span>
@@ -261,13 +270,11 @@ class App extends React.Component<any, any> {
                 <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
               </div>
             </div>
-            <audio src={this.state.musicCtrl.musicUrl} autoPlay></audio>
-
           </div>
-
         </div>
 
 
+       
       </div>
     );
   }
@@ -342,8 +349,6 @@ function Login(props: any) {
     </div>
   </div>
 }
-
-
 
 const mapStateToProps = (state: any) => {
   return {

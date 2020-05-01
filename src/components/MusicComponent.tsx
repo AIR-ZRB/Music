@@ -100,11 +100,3 @@ export let Loading = (): any => {
     </div>
 
 }
-
-
-// 音频
-export let AudioComponent = (props: any): any => {
-    console.log("音乐组件")
-    return <audio src={props.musicUrl} autoPlay ref={(audio)=>{props.getAudio(audio)}}>你的浏览器不支持</audio>
-    // return <audio src={props.musicUrl} autoPlay ref={(audio)=>{aa = audio}}>你的浏览器不支持</audio>
-}
