@@ -25,8 +25,8 @@ const store = createStore(
   })
 );
 
-store.subscribe(() => {
-  console.log("更新");
-//   console.log(store.getState());
-});
+// store.subscribe(() => {
+//   console.log("更新");
+// //   console.log(store.getState());
+// });
 export default store;

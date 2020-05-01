@@ -70,7 +70,9 @@ class App extends React.Component<any, any> {
         avatarName: "空",
         albumPic: "https://p1.music.126.net/VpxLTSBr1mAcIqIneMFKxA==/1374389547119710.jpg",
         play: false,
-        musicUrl: ""
+        musicUrl: "",
+        durationSecond: "0",
+        durationMinute: "00:00"
       },
       todaySongList: {},
       length: 0,
@@ -145,13 +147,15 @@ class App extends React.Component<any, any> {
   }
 
 
-  // 获取当前播放音乐的信息
+  // 获取当前播放音乐的信息,双击音乐后会被调用
   getCurrentPlayMusic = (message: any): void => {
     console.log("获取目前歌曲的信息")
-    console.log(message)
     this.toSetState("musicCtrl", message);
 
+    // const audio: any = this.getAudioComponent();
+
   }
+  
 
   // 音乐点击暂停或者开始
   playAndPause = () => {
@@ -160,7 +164,8 @@ class App extends React.Component<any, any> {
       return;
     }
 
-    let audio: any = this.getAudioComponent();
+    const audio: any = this.getAudioComponent();
+    
 
     // 由于setState还是dispatch都有延迟，所有这么写是可以的
     this.toSetState("musicCtrl", { play: !this.state.musicCtrl.play });
@@ -219,7 +224,7 @@ class App extends React.Component<any, any> {
             <Route path="/friends" component={friends} />
             <Route path="/songList" render={(routeProps: any) => {
               return (
-                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic} musicIsPlay={this.state.musicCtrl} />
+                <SongList router={routeProps} getCurrentPlayMusic={this.getCurrentPlayMusic}/>
               )
             }}></Route>
 
@@ -252,7 +257,7 @@ class App extends React.Component<any, any> {
 
 
             <div className="progress">
-              <div className="progress-bar" role="progressbar" style={{ width: "65%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>65%</div>
+          <div className="progress-bar" role="progressbar" style={{ width: "65%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>{this.state.musicCtrl.durationSecond}</div>
             </div>
 
             <div className="voice">
