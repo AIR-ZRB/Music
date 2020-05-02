@@ -45,8 +45,8 @@ class App extends React.Component<any, any> {
         {
           id: 3,
           name: "liveStreaming",
-          icon: "Tv",
-          content: "直播",
+          icon: "Filter",
+          content: "排行榜",
           select: false,
         },
         {
@@ -72,7 +72,7 @@ class App extends React.Component<any, any> {
         play: false,
         timer: "",
         speed: 100,
-        volume: 100,
+        volume: 50,
         playDuration: 0,
         playPercentage: 0,
         durationSecond: 0,
