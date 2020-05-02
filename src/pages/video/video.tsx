@@ -1,7 +1,9 @@
 import React from "react";
 import "./video.scss"
 
-export default class video extends React.Component<any, any> {
+import { connect } from "react-redux";
+
+class video extends React.Component<any, any> {
     constructor(props: any) {
         super(props);
         this.state = {}
@@ -26,6 +28,17 @@ export default class video extends React.Component<any, any> {
     }
 }
 
+
+
+
+const mapStateToProps = (state: any) => {
+    return {
+      store: state
+    }
+  }
+  
+  
+  export default connect(mapStateToProps)(video);
 
 
 // function videoList(props: any){

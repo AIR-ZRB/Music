@@ -13,6 +13,7 @@ import SongList from "./pages/songList/songList";
 import { requestData } from "./components/MusicComponent";
 
 import { connect } from "react-redux";
+import { isCompositeComponent } from "react-dom/test-utils";
 
 
 
@@ -41,7 +42,7 @@ class App extends React.Component<any, any> {
           id: 2,
           name: "video",
           icon: "Camera-video",
-          content: "视频",
+          content: "最新MV",
           select: false,
         },
         {
@@ -74,6 +75,7 @@ class App extends React.Component<any, any> {
         play: false,
         timer: "",
         speed: 100,
+        volume: 100,
         playDuration: 0,
         playPercentage: 0,
         durationSecond: 0,
@@ -161,13 +163,11 @@ class App extends React.Component<any, any> {
     audio.load();
     audio.oncanplay = () => {
       // 开启定时器
-      console.log(audio.duration)
-      let timer = setInterval(() => {
-        this.currentPlayTime(parseInt(audio.duration));
-      }, this.state.musicCtrl.speed)
-
       // 清空之前的的数据
-      this.toSetState("musicCtrl", { durationSecond: audio.duration, playDuration: 0, playPercentage: 0, timer: timer });
+      this.toSetState("musicCtrl", { durationSecond: audio.duration, playDuration: 0, playPercentage: 0 });
+
+
+      this.progresstimer(true);
 
     }
 
@@ -176,16 +176,44 @@ class App extends React.Component<any, any> {
   }
 
   // 进度条滚动
-  currentPlayTime = (musicDuration: number) => {
-
-    if (this.state.musicCtrl.durationSecond > this.state.musicCtrl.playDuration) {
-      let percentage: number = (this.state.musicCtrl.playDuration / musicDuration) * 100;
-      this.toSetState("musicCtrl", { playDuration: this.state.musicCtrl.playDuration + 0.1, playPercentage: percentage + "" });
+  progresstimer = (flag: boolean) => {
+    let timer;
+    if (flag) {
+      timer = setInterval(() => {
+        this.currentPlayTime(this.state.musicCtrl.durationSecond);
+      }, this.state.musicCtrl.speed)
+      this.toSetState("musicCtrl",{timer: timer});
     } else {
+      console.log("停止停止");
+      clearInterval(timer);
       clearInterval(this.state.musicCtrl.timer);
     }
 
   }
+  currentPlayTime = (musicDuration: number) => {
+    if (this.state.musicCtrl.durationSecond > this.state.musicCtrl.playDuration) {
+      let percentage: number = (this.state.musicCtrl.playDuration / musicDuration) * 100;
+      // console.log(percentage)
+      this.toSetState("musicCtrl", { playDuration: this.state.musicCtrl.playDuration + 0.1, playPercentage: percentage });
+    } else {
+      this.progresstimer(false)
+    }
+  }
+
+  // 控制声音的进度条
+  currentVolume = (event: any) => {
+    event.persist();
+    let clickCoordinates = event.pageX - event.target.offsetLeft;
+    let afterClickVolume =  clickCoordinates / event.target.offsetWidth;
+
+    const audio: any = this.getAudioComponent();
+    audio.volume = afterClickVolume;
+
+    this.toSetState("musicCtrl",{volume: parseInt(afterClickVolume * 100 + '')});
+    console.log(audio.volume);
+  }
+
+
 
 
   // 音乐点击暂停或者开始
@@ -198,15 +226,15 @@ class App extends React.Component<any, any> {
     // 由于setState还是dispatch都有延迟，所有这么写是可以的
     this.toSetState("musicCtrl", { play: !this.state.musicCtrl.play });
     let flag = !this.state.musicCtrl.play;
+
+   
+
     if (flag) {
       audio.play();
-      let timer = setInterval(() => {
-        this.currentPlayTime(this.state.musicCtrl.durationSecond);
-      }, this.state.musicCtrl.speed)
-      this.toSetState("musicCtrl", { timer: timer });
+      // this.progresstimer(true);
     } else {
       audio.pause();
-      clearInterval(this.state.musicCtrl.timer)
+      // this.progresstimer(false);
     }
 
   }
@@ -219,6 +247,8 @@ class App extends React.Component<any, any> {
     }
   }
   getAudioComponent = () => { }
+
+
 
   // props变化
   componentWillReceiveProps(nextProps: any) {
@@ -301,8 +331,8 @@ class App extends React.Component<any, any> {
 
             <div className="voice">
               <span><img src={process.env.PUBLIC_URL + `/icons/Volume-up.svg`} alt="" /></span>
-              <div className="progress">
-                <div className="progress-bar" role="progressbar" style={{ width: "15%" }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100}>15%</div>
+              <div className="progress" onClick={this.currentVolume}>
+                <div className="progress-bar" role="progressbar" style={{ width: `${this.state.musicCtrl.volume}%` }} aria-valuenow={25} aria-valuemin={0} aria-valuemax={100} >{this.state.musicCtrl.volume}%</div>
               </div>
             </div>
           </div>
