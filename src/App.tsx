@@ -13,9 +13,6 @@ import SongList from "./pages/songList/songList";
 import { requestData } from "./components/MusicComponent";
 
 import { connect } from "react-redux";
-import { isCompositeComponent } from "react-dom/test-utils";
-
-
 
 class App extends React.Component<any, any> {
 
@@ -193,7 +190,6 @@ class App extends React.Component<any, any> {
   currentPlayTime = (musicDuration: number) => {
     if (this.state.musicCtrl.durationSecond > this.state.musicCtrl.playDuration) {
       let percentage: number = (this.state.musicCtrl.playDuration / musicDuration) * 100;
-      // console.log(percentage)
       this.toSetState("musicCtrl", { playDuration: this.state.musicCtrl.playDuration + 0.1, playPercentage: percentage });
     } else {
       this.progresstimer(false)
@@ -276,7 +272,9 @@ class App extends React.Component<any, any> {
             </div>
           </nav>
 
-          {/* 左边的列表 */}
+
+      
+            {/* 左边的列表 */}
           <div className="navList">
             <ul>
               <ListLink navList={this.state.navList} edit={this.setData} />
@@ -298,6 +296,8 @@ class App extends React.Component<any, any> {
             }}></Route>
 
           </div>
+       
+          
         </HashRouter>
 
 

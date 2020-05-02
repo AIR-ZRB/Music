@@ -1,6 +1,10 @@
 .video {
+  padding-bottom: 70px;
+  overflow: hidden;
   .videoList {
     position: relative;
+    float: left;
+    margin: 50px 30px;
 
     width: 250px;
     height: 150px;
@@ -28,6 +32,11 @@
         margin: 2px;
         font-size: 14px;
         line-height: 20px;
+        &:first-child {
+          height: 16px;
+          overflow: hidden;
+        }
+
         &:nth-child(2) {
           color: #ccc;
         }

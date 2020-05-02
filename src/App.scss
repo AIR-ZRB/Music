@@ -23,6 +23,7 @@ $themeColor: #007bff;
 
   .navList {
     width: 300px;
+    padding-bottom: 70px;
     position: absolute;
 
     ul {
@@ -62,8 +63,8 @@ $themeColor: #007bff;
 
   .column {
     width: 98%;
-    height: 100px;
-    padding-left: 300px;
+    height: auto;
+    padding:0 0 70px 300px;
   }
 
   .login {
@@ -151,9 +152,6 @@ $themeColor: #007bff;
         img {
           width: 30px;
           height: 30px;
-        }
-
-        &:nth-child(2) {
         }
       }
     }
