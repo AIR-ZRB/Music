@@ -11,8 +11,6 @@ export default class liveStreaming extends React.Component<any, any> {
         }
     }
 
-
-
     requestRanking = (): void => {
         let url = "http://localhost:4000/top/list?idx=2";
         requestData(url)
@@ -49,18 +47,7 @@ export default class liveStreaming extends React.Component<any, any> {
                 <h3>排行榜</h3>
 
                 <div className="ranking">
-                    {/* <ul>
-                        <li className="rankingItem">
-                            <img src="http://p2.music.126.net/LuY70Y0l0GWGa-VHo9zLQg==/109951164932057321.jpg" alt="" />
-                            <section>
-                                <p>第三种人 (Live)</p>
-                                <p>隔壁老樊</p>
-                            </section>
-                        </li>
-                    </ul> */}
-
                     <Ranking ranking={this.state.ranking}/>
-
                 </div>
             </div>
         )

@@ -64,7 +64,7 @@ class songList extends React.Component<any, any> {
     // 当props改变
     componentWillReceiveProps(nextProps: any) {
       // 当路由发生改变
-        if(!(JSON.stringify(nextProps) == JSON.stringify(this.props))){
+        if(!(JSON.stringify(nextProps) === JSON.stringify(this.props))){
             console.log("songList组件props更新");
             this.reqCurrentSongListMusic(nextProps.router.location.search.substr(4));
         }

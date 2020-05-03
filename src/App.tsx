@@ -249,7 +249,7 @@ class App extends React.Component<any, any> {
   // props变化
   componentWillReceiveProps(nextProps: any) {
 
-    if (!(JSON.stringify(nextProps) == JSON.stringify(this.props))) {
+    if (!(JSON.stringify(nextProps) === JSON.stringify(this.props))) {
       console.log("App 监视props已变化");
       this.toSetState("musicCtrl", { musicUrl: nextProps.store.musicUrl, play: nextProps.store.musicPlay });
     }
