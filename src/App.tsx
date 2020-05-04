@@ -120,6 +120,23 @@ class App extends React.Component<any, any> {
       .then(() => {
         // 登录之后自动请求歌单列表
         this.reqSongList("337199199")
+
+        console.log("试着获取cookie")
+        var strCookie = document.cookie;
+        var arrCookie = strCookie.split("; ");
+
+        console.log(strCookie);
+        console.log(arrCookie);
+
+        // for(var i = 0; i < arrCookie.length; i++){
+        //     var arr = arrCookie[i].split("=");
+        //     if(cookieName == arr[0]){
+        //         return arr[1];
+        //     }
+        // }
+    
+
+
       })
   }
 

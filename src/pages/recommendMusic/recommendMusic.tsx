@@ -6,6 +6,11 @@ import "./recommendMusic.scss";
 import { requestData, NavList } from "../../components/MusicComponent";
 
 
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
+
+
 export default class RecommendMusic extends React.Component<any, any> {
 
     constructor(props: any) {
@@ -40,11 +45,19 @@ export default class RecommendMusic extends React.Component<any, any> {
                 },
             ],
             songList: [
-              
+
             ],
             banner: [
 
-            ]
+            ],
+            settings: {
+                dots: true,
+                infinite: true,
+                speed: 500,
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                autoplay: true
+            }
         }
     }
 
@@ -73,11 +86,11 @@ export default class RecommendMusic extends React.Component<any, any> {
     requestBanner = (): void => {
         let url = "http://localhost:4000/banner";
         requestData(url)
-            .then((data: any)=>{
+            .then((data: any) => {
                 this.setState({
                     banner: data.banners
                 })
-               
+
             })
     }
 
@@ -99,7 +112,15 @@ export default class RecommendMusic extends React.Component<any, any> {
 
 
                 <div className="banner">
-                    <Banner banner={this.state.banner} />
+                    {/* <Banner banner={this.state.banner} /> */}
+                    <Slider {...this.state.settings}>
+                       
+                        {this.state.banner.map((item: any) => {
+                            return <div > <img src={item.imageUrl} alt="" key={item.imageUrl} /></div>
+
+                        })}
+
+                    </Slider>
                 </div>
 
                 <div className="songList">
@@ -125,14 +146,6 @@ function SongList(props: any) {
 
     })
 }
-
-// Banner
-function Banner(props: any) {
-    return props.banner.map((item: any) => {
-        return <img src={item.imageUrl} alt="" key={item.imageUrl}/>
-    })
-}
-
 
 
 

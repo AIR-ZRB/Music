@@ -19,8 +19,6 @@ export default class liveStreaming extends React.Component<any, any> {
                     ranking: data.playlist.tracks,
                 })
 
-
-                console.log(this.state.ranking.length)
                this.spliceArray(JSON.parse(JSON.stringify(this.state.ranking)),20) 
                
             })
